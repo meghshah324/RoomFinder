@@ -13,9 +13,9 @@ const residenceSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  roomateGender: {
-    type: String,
-    require: true,
+  roommateGender: { 
+    type: String, 
+    enum: ["Male", "Female", "Any"] 
   },
   location: {
     type: String,
@@ -28,10 +28,10 @@ const residenceSchema = new mongoose.Schema({
   images: [
     {
       data: Buffer,
-      contentType: String, 
+      contentType: String,
     },
   ],
-  amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" }, 
+  amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" },
   lifestyle: { type: mongoose.Schema.Types.ObjectId, ref: "Lifestyle" },
 });
 const Residence = mongoose.model("Residence", residenceSchema);
