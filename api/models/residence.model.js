@@ -27,8 +27,8 @@ const residenceSchema = new mongoose.Schema({
   },
   images: [
     {
-      data: Buffer, // Binary data for the image
-      contentType: String, // MIME type (e.g., "image/jpeg")
+      data: Buffer,
+      contentType: String, 
     },
   ],
   amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" }, 
