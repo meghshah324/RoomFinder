@@ -1,12 +1,17 @@
 import express from "express";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 import { postList } from "../controllers/postListing.controller.js";
 import { findRooms } from "../controllers/filterRommate.controller.js";
 import { updateListing } from "../controllers/updateRoomDetails.js";
+import { deletePost } from "../controllers/deleteListing.controller.js";
+import { rooms } from "../controllers/rooms.controller.js";
 
 const router = express.Router();
 
-router.get("/createlist", postList);
-router.post("/search", findRooms);
-router.put("/update-listing/:id", updateListing);
+router.post("/createlist", authMiddleware, postList);
+router.get("/search", findRooms);
+router.put("/update-listing/:id", authMiddleware, updateListing);
+router.delete("/delete-listing/:id", authMiddleware, deletePost);
+router.get("/rooms", rooms);
 
 export default router;

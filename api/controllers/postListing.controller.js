@@ -1,5 +1,5 @@
 import amenitiesModel from "../models/amenities.model.js";
-import lifeStyleModel from "../models/lifeStyle.mode.js";
+import lifeStyleModel from "../models/lifestyle.model.js";
 import residenceModel from "../models/residence.model.js";
 
 export  const postList = async (req, res) => {
@@ -10,7 +10,7 @@ export  const postList = async (req, res) => {
     roomateGender,
     location,
     description,
-    images,
+    // images,
     cleanliness,
     foodPref,
     smoker,
@@ -27,29 +27,29 @@ export  const postList = async (req, res) => {
 
   const newAmenity = await amenitiesModel.create({
     parking,
-    // wifi,
-    // ac,
-    // tv,
-    // fridge,
-    // washingMachine,
+    wifi,
+    ac,
+    tv,
+    fridge,
+    washingMachine,
   });
 
   const lifeStyle = await lifeStyleModel.create({
     cleanliness,
-    // foodPref,
-    // smoker,
-    // occupation,
-    // partyHabit,
-    // overnightGuest,
+    foodPref,
+    smoker,
+    occupation,
+    partyHabit,
+    overnightGuest,
   });
 
   const residence = await residenceModel.create({
     rent,
-    // buildingType,
-    // roomType,
-    // roomateGender,
-    // location,
-    // description,
+    buildingType,
+    roomType,
+    roomateGender,
+    location,
+    description,
     amenities: newAmenity._id,
     lifestyle: lifeStyle._id,
   });

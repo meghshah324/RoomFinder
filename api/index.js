@@ -1,9 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js"
-// import  createList from "./routes/createList.route.js"
-// import findRooms from "./routes/residence.route.js"
 import listing from "./routes/listing.route.js"
 dotenv.config();
 
@@ -19,23 +18,22 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api/auth',authRouter);
 app.use('/api/listing',listing);
-// app.use('/api/post',createList);
-// app.use('/api/rooms',findRooms);
 
-app.use((err,req,res,next) => {
-   const statusCode = err.statusCode || 500;
-   const messsage = err.message || 'Internal Server Error';
-   return res.status(statusCode).json({
-     success : false,
-     statusCode,
-     messsage
-   });
-});
+// app.use((err,req,res,next) => {
+//    const statusCode = err.statusCode || 500;
+//    const messsage = err.message || 'Internal Server Error';
+//    return res.status(statusCode).json({
+//      success : false,
+//      statusCode,
+//      messsage
+//    });
+// });
 
 app.listen(3000, () => {
   console.log(`Server running on port ${3000}`);
