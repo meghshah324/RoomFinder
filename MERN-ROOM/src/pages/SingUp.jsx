@@ -13,8 +13,6 @@ export default function SignUp() {
 
   const [loading , setLoading] = useState(false);
   const [error,setError] = useState(null);
- 
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData(prevState => ({
@@ -22,14 +20,12 @@ export default function SignUp() {
       [id]: value
     }));
   };
- 
   const handleGenderSelect = (gender) => {
     setFormData(prevState => ({
       ...prevState,
       gender
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

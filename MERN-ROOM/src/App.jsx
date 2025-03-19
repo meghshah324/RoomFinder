@@ -7,6 +7,7 @@ import SignIn from "./pages/SignIn";
 import SingUp from "./pages/SingUp";
 import Header from "./components/Header";
 import Property from "./pages/Property";
+import RoommateCard from "./components/RoommateCard.jsx";
 
 
 
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SingUp/>} />
             <Route path="/property" element={<Property/>} />
+            <Route path="/rooms" element={<RoommateCard/>} />
          </Routes>
        </BrowserRouter>
 
