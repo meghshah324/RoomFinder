@@ -19,7 +19,7 @@ export default function Header() {
                      Find Room
                   </a>
                </Link>
-               <Link to="/profile" >
+               <Link to="/form/profile" >
                   <a
                      href="/"
                      className="px-4 py-2 border-none rounded-full  text-gray-600 hover:bg-yellow-200 transition duration-600"
