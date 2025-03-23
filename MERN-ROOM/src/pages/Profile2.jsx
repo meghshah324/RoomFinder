@@ -3,32 +3,51 @@ import { Link } from 'react-router-dom';
 import { useFormContext } from '../context/FormContext';
 
 function LifestyleForm() {
-  const { formData, setFormData } = useFormContext();
+    const { formData, setFormData } = useFormContext();
     const handleChange = (e) => {
         e.preventDefault();
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-    const handleSubmit = () => {
-        setFormData({
-            location: "",
-            rent: "",
-            buildingType: "",
-            roomType: "",
-            amenities: [],
-            description: "",
-            cleanliness : "",
-            foodPreference : "",
-            smoker : "",
-            partyHabit : "",
-            overnightGuests : "",
-            occupation : "",
-          });
-    
-          setSelected(null);
-          setSelectedFurnished(null);
-          setSelectAmenities([]);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formData);
+        try {
+            console.log("Hi");
+            const res = await fetch('http://localhost:3000/api/listing/createlist', {
+                method: 'POST',
+                credentials: 'include', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+            console.log(data);
+       
+            setFormData({
+                location: "",
+                rent: "",
+                buildingType: "",
+                roomType: "",
+                genderLookingFor :"",
+                amenities: [],
+                description: "",
+                cleanliness: "",
+                foodPreference: "",
+                smoker: "",
+                partyHabit: "",
+                overnightGuest: "",
+                occupation: "",
+            });
+            // setSelected(null);
+            // setSelectedFurnished(null);
+            // setSelectAmenities([]);
+        } catch (error) {
+            console.error("Error during form submission:", error);
+        }
     }
-    console.log(formData);
+
     return (
         <div className='bg-gray-100 min-h-screen flex flex-col items-center p-6'>
             <div className='bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl'>
@@ -71,7 +90,7 @@ function LifestyleForm() {
                     </select>
 
                     <label className='block text-gray-700 font-medium'>Overnight Guests</label>
-                    <select name='overnightGuests' onChange={handleChange} className='w-full border rounded-lg p-2'>
+                    <select name='overnightGuest' onChange={handleChange} className='w-full border rounded-lg p-2'>
                         <option value=''>Select</option>
                         <option>Allowed</option>
                         <option>Not Allowed</option>
@@ -89,7 +108,7 @@ function LifestyleForm() {
 
                     <div className='flex justify-between mt-4'>
                         <Link to='/form/profile'>
-                            <button type='button'  className='px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600'>Back</button>
+                            <button type='button' className='px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600'>Back</button>
                         </Link>
                         <button type='button' onClick={handleSubmit} className='px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-purple-600'>Submit</button>
                     </div>

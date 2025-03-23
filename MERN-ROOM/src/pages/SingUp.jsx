@@ -20,12 +20,14 @@ export default function SignUp() {
       [id]: value
     }));
   };
+
   const handleGenderSelect = (gender) => {
     setFormData(prevState => ({
       ...prevState,
       gender
     }));
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -38,7 +40,6 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-  
 
       const data = await result.json();
       console.log("Response Data:", data);

@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  profilePicture: {
-    type: String,
-    default: "",
-  },
   date: {
     type: Date,
     default: Date.now,
@@ -31,6 +27,5 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model("User", userSchema);
 
-// module.exports = User;
 
 export default User;

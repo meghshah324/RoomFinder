@@ -5,7 +5,7 @@ const lifeStyleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  foodPref: {
+  foodPreference: {
     type: String,
     required: true,
   },

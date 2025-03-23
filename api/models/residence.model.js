@@ -1,18 +1,14 @@
 import mongoose from "mongoose";
 
 const residenceSchema = new mongoose.Schema({
-  rent: { type: Number, required: true },
+  rent: { type: String, required: true },
   buildingType: { type: String, required: true },
   roomType: { type: String, required: true },
-  roommateGender: { type: String, enum: ["Male", "Female", "Any"] },
+  genderLookingFor: { type: String, enum: ["Male", "Female", "Any"] },
   location: { type: String, required: true },
   description: { type: String, required: true },
-  // images: [
-  //   {
-  //     data: Buffer,
-  //     contentType: String,
-  //   },
-  // ],
+  occupation: { type: String, required: true },
+  postedBy : {type : mongoose.Schema.Types.ObjectId,ref :"User"},
   amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" },
   lifestyle: { type: mongoose.Schema.Types.ObjectId, ref: "LifeStyle" },
 });

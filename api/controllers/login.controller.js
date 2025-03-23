@@ -15,8 +15,13 @@ export const Login = async (req,res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ email: user.email }, "secret");
-    res.status(200).json({ token });
+    const jwtToken = jwt.sign({ email: user.email }, "secret");
+    res.cookie('token',jwtToken,{
+      httpOnly: true,
+      sameSite: 'Strict',  
+      maxAge: 24 * 60 * 60 * 1000 
+    })
+    res.status(200).json({ jwtToken });
   } catch (error) {
     console.error("Error fetching login:", error); 
     res.status(500).json({ error: error.message }); 

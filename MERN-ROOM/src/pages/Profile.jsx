@@ -3,6 +3,7 @@ import { AirVent, ParkingCircle, Refrigerator, Tv, WashingMachine, Wifi } from '
 import { Link } from 'react-router-dom';
 import { useFormContext } from '../context/FormContext';
 
+
 function Profile() {
   const amenities = [
     { name: 'wifi', icon: <Wifi size={28} />, label: 'WiFi' },
@@ -40,6 +41,7 @@ function Profile() {
   };
 
   console.log(formData);
+
 
 
 
@@ -123,6 +125,28 @@ function Profile() {
                   }
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div className='space-y-4'>
+            <label className='block text-gray-700 font-medium'>Preferred Gender</label>
+            <div className='flex gap-2 mt-2'>
+              {['Male', 'Female', 'Any'].map((gender, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`px-4 py-2 border font-medium rounded-lg 
+          ${formData.genderLookingFor === gender ? 'bg-green-500 text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      genderLookingFor: gender
+                    }));
+                  }}
+                >
+                  {gender}
+                </button>
+              ))}
             </div>
           </div>
 

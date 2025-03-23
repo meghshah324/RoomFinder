@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import Property from "./pages/Property";
 import RoommateCard from "./components/RoommateCard.jsx";
 import { FromProvide } from "./context/FormContext.jsx"
+import { AuthProvider } from './context/AuthContext.jsx'
 
 
 
@@ -17,6 +18,7 @@ import { FromProvide } from "./context/FormContext.jsx"
 export default function App() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -32,9 +34,10 @@ export default function App() {
           } />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SingUp />} />
-        <Route path="/property" element={<Property />} />
+        <Route path="/property/:id" element={<Property />} />
         <Route path="/rooms" element={<RoommateCard />} />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
 
   );

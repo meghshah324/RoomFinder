@@ -8,16 +8,15 @@ export const FromProvide = ({ children }) => {
             rent: '',
             buildingType: '',
             roomType: '',
-            roomateGender: '',
+            genderLookingFor:'',
             description: '',
             cleanliness: '',
-            foodPref: '',
+            foodPreference: '',
             smoker: '',
             occupation: '',
             partyHabit: '',
             overnightGuest: '',
             amenities : [
-
             ]
       });
       return (

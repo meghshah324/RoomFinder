@@ -1,32 +1,26 @@
 import mongoose from "mongoose";
 
 const amenitiesSchema = mongoose.Schema({
-     parking : {
-         type : Boolean,
-         require : true
-     },
-     washingMachine : {
-        type : Boolean,
-        require : true
+    parking: {
+        type: Boolean,
     },
-    wifi : {
-        type : Boolean,
-        require : true
+    washingMachine: {
+        type: Boolean,
     },
-    ac : {
-        type : Boolean,
-        require : true
+    wifi: {
+        type: Boolean,
     },
-    tv : {
-        type : Boolean,
-        require : true
+    ac: {
+        type: Boolean,
     },
-    fridge : {
-        type : Boolean,
-        require : true
+    tv: {
+        type: Boolean,
+    },
+    fridge: {
+        type: Boolean,
     },
 })
 
-const Amenities = mongoose.model("Amenity",amenitiesSchema);
+const Amenities = mongoose.model("Amenity", amenitiesSchema);
 
 export default Amenities;
