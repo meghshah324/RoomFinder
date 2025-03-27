@@ -15,15 +15,13 @@ export const signup = async (req, res, next) => {
 
     try {
         await newUser.save();
-        const jwtToken = jwt.sign({ userId: newUser._id, email: newUser.email }, "secret");
-
+        const jwtToken = jwt.sign({ userId: newUser._id, email: newUser.email }, process.env.JWT_SECRET);
         res.cookie('token', jwtToken, {
             httpOnly: true,
             sameSite: 'Strict',
             secure: false,
             maxAge: 24 * 60 * 60 * 1000
         });
-
         res.status(200).json({ message: "User Created Successfully" });
     } catch (err) {
         next(err);

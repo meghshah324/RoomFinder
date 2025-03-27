@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
         method: 'GET',
         credentials: 'include',
       });
-
       if (res.ok) {
         const data = await res.json();
         console.log(data);
@@ -43,4 +42,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export   const useAuthContext = () => useContext(AuthContext);

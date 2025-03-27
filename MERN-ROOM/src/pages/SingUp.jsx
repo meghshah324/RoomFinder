@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { use } from "react";
 
-export default function SignUp() {
 
+// const navigate = useNavigate();
+
+export default function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -11,45 +15,45 @@ export default function SignUp() {
     city: "",
   });
 
-  const [loading , setLoading] = useState(false);
-  const [error,setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [id]: value
+      [id]: value,
     }));
   };
 
   const handleGenderSelect = (gender) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      gender
+      gender,
     }));
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
-      const result = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const result = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       const data = await result.json();
       console.log("Response Data:", data);
-  
+
       if (data.success == false) {
         setLoading(false);
-        setError(data.messsage || 'Operation failed.');
+        setError(data.messsage || "Operation failed.");
         return;
       }
-  
+
       //Reset form on success
       setFormData({
         username: "",
@@ -62,14 +66,12 @@ export default function SignUp() {
       setError(null);
       setLoading(false);
       console.log("Form submitted successfully:", data);
-  
     } catch (error) {
       console.error("Error during form submission:", error);
       setLoading(false);
-      setError(error.message || 'A network error occurred.');
+      setError(error.message || "A network error occurred.");
     }
   };
-  
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
@@ -143,7 +145,11 @@ export default function SignUp() {
               <button
                 type="button"
                 onClick={() => handleGenderSelect("Male")}
-                className={`py-2 px-4 rounded-lg border border-gray-300 w-1/2 ${ formData.gender === "Male" ? "bg-green-500 text-white"  : "bg-white text-gray-700"   }`}
+                className={`py-2 px-4 rounded-lg border border-gray-300 w-1/2 ${
+                  formData.gender === "Male"
+                    ? "bg-green-500 text-white"
+                    : "bg-white text-gray-700"
+                }`}
               >
                 Male
               </button>
@@ -184,15 +190,27 @@ export default function SignUp() {
           <div className="text-center pt-6">
             <button
               type="submit"
-              disabled = {loading}
+              disabled={loading}
               className="w-2/3 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-75"
             >
-              {loading ? 'Loading...' : 'Register'}
+              {loading ? "Loading..." : "Register"}
             </button>
 
             {error && <p className="text-red-500">{error}</p>}
           </div>
         </form>
+
+        {/* Already have an account? */}
+        <p className="mt-4 text-sm text-gray-600 text-center">
+          Already have an account?{" "}
+          <button
+            type="button"
+            onClick={() => navigate("/signin")}
+            className="text-green-500 font-semibold hover:underline"
+          >
+            Login
+          </button>
+        </p>
       </div>
     </div>
   );

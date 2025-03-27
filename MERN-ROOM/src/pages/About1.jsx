@@ -5,8 +5,8 @@ import { Send, User, Bot } from "lucide-react";
 const socket = io("http://localhost:3000");
 
 const ChatbotUI = () => {
-  const senderId = "123";
-  const receiverId = "456";
+  const senderId = "456";
+  const receiverId = "123";
   const roomId = "room123";
 
   const [messages, setMessages] = useState([]);
@@ -45,6 +45,7 @@ const ChatbotUI = () => {
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() === "") return;
+
     const userMessage = {
       id: Date.now(),
       roomId,
@@ -52,6 +53,7 @@ const ChatbotUI = () => {
       receiverId,
       message: inputMessage,
     };
+
     try {
       socket.emit("sendMessage", userMessage); 
       setMessages((prev) => [...prev, userMessage]); 

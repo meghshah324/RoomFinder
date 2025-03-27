@@ -26,7 +26,7 @@ export default function ImageScroller() {
     }
   };
   return (
-    <div className="w-[70%]  p-0 m-10 flex-start">
+    <div className="w-auto  p-0 m-10 flex-start">
       <div className="relative w-full">
         <button
           onClick={() => scroll(-300)}

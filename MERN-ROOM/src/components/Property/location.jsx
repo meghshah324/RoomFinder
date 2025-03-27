@@ -6,7 +6,7 @@ function location({location}) {
     console.log(location);
     return (
         <>
-            <div className="m-10 p-5 flex-col bg-gray-100 w-[70%] rounded-lg shadow-sm">
+            <div className="m-10 p-5 flex-col bg-gray-100 w-auto rounded-lg shadow-sm">
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold text-gray-800">
                         Location
