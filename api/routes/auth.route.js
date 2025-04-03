@@ -10,15 +10,15 @@ router.post("/signup", signup);
 router.post("/signin", Login);
 router.get("/me", authMiddleware, async (req, res) => {
      const userId = req.user.userId;
-
      try {
-          const user = await User.findById(userId).select('username');
+          const user = await User.findById(userId).select('username email');
           if (!user) {
                return res.status(404).json({ message: 'User not found' });
           }
           res.json({
                userId: user._id,
                username: user.username,
+               email : user.email
           });
      } catch (error) {
           console.error('Error fetching user:', error);

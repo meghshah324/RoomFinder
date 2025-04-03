@@ -3,7 +3,7 @@ import {MapPin} from 'lucide-react';
 
 
 function location({location}) {
-    console.log(location);
+  
     return (
         <>
             <div className="m-10 p-5 flex-col bg-gray-100 w-auto rounded-lg shadow-sm">

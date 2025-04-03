@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function LifeStyle({lifeStyle}) {
-    console.log(lifeStyle);
+  
     return (
         <div className='m-10 bg-gray-100 p-5 rounded-lg shadow-sm w-auto'>
             <h2 className='text-2xl font-semibold text-gray-800 mb-6'>

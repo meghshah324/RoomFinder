@@ -4,7 +4,7 @@ import { User2, Users, Wallet, Search } from 'lucide-react';
 
 export default function basicInfo({info}) {
     
-    console.log(info);
+    
 
 const { rent, buildingType, roomType, genderLookingFor } = info;
 return (

@@ -6,7 +6,6 @@ export const rooms = async (req, res) => {
          .populate("amenities")
          .populate("lifestyle")
          .populate("postedBy", "username email");
-   
       res.status(200).json(listing);
    } catch (error) {
       console.error("Error fetching rooms:", error);

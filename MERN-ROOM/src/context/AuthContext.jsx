@@ -3,8 +3,9 @@ import { createContext, useState, useContext, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
+  const [email, setEmail] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
@@ -15,17 +16,21 @@ export const AuthProvider = ({ children }) => {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
-        setUser(data.userId);
+        setUserId(data.userId);
+        setEmail(data.email);
         setUserName(data.username);
+      
       } else {
-        setUser(null);
+        console.error('Error fetching user:');
+        setUserId(null);
         setUserName(null);
+        setEmail(null);
       }
     } catch (error) {
       console.error('Error fetching user:', error);
-      setUser(null);
+      setUserId(null);
       setUserName(null);
+      setEmail(null);
     } finally {
       setLoading(false);
     }
@@ -33,13 +38,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     fetchUser();
-  }, []); // ✅ only run once
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, userName }}>
+    <AuthContext.Provider value={{ userId, loading, userName , email}}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export   const useAuthContext = () => useContext(AuthContext);
+
+

@@ -15,7 +15,7 @@ export const signup = async (req, res, next) => {
 
     try {
         await newUser.save();
-        const jwtToken = jwt.sign({ userId: newUser._id, email: newUser.email }, process.env.JWT_SECRET);
+        const jwtToken = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET);
         res.cookie('token', jwtToken, {
             httpOnly: true,
             sameSite: 'Strict',

@@ -1,7 +1,7 @@
 import Residence from "../models/residence.model.js";
 
 export const deletePost = async (req, res) => {
-  const postid = req.params.postid;
+  const postid = req.params.id;
   const Post = await Residence.findById(postid);
   console.log(Post);
   try {
