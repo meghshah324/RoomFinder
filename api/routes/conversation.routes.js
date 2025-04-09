@@ -3,7 +3,7 @@ import {
   getConversationsByProperty,
   getConversationById,
   getOrCreateConversation
-} from '../controllers/conversationController.js';
+} from '../controllers/Chat/conversation.controller.js';
 
 const router = express.Router();
 
