@@ -13,6 +13,8 @@ import { FromProvide } from "./context/FormContext.jsx"
 import { AuthProvider } from './context/AuthContext.jsx'
 import ChatbotUI from "./components/ChatCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import MessagesListPage from "./components/Messages.jsx";
+import ChatPage from "./components/ChatPage.jsx";
 
 
 export default function App() {
@@ -38,6 +40,8 @@ export default function App() {
         <Route path="/property/:id" element={<Property />} />
         <Route path="/rooms" element={<RoommateCard />} />
         <Route path="/chat" element={<ChatbotUI />} />
+        <Route path="/messages" element={<MessagesListPage />} />
+        <Route path="/chatpage" element={<ChatPage />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

@@ -53,19 +53,12 @@ function Property() {
 
   return (
     <>
-      {/* <div className="w-full lg:w-1/3">
-          <div className="sticky top-4 rounded-2xl shadow-md bg-white p-4 h-full">
-          <ChatbotUI info={id}  />
-          </div>
-          </div> */}
-
       <div className="flex flex-col lg:flex-row gap-6 p-4 lg:p-8 bg-gray-50 min-h-screen">
         <div className="w-full lg:w-1/5">
           <div className="sticky top-4 rounded-2xl p-4 ">
             <ProfileCard roomIdDetails={roomIdDetails} />
           </div>
         </div>
-
         <div className="flex-1 space-y-4">
           <div className="rounded-2xl shadow-md bg-white p-4">
             <ImageScroller />

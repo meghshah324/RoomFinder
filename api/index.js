@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
 import listing from "./routes/listing.route.js";
-import chatRoutes from "./routes/chat.route.js";
+import messageRoutes from "./routes/message.routes.js";
+import conversationRoutes from "./routes/conversation.routes.js";
 import cors from "cors";
 import { Server as SocketIOServer } from "socket.io";
 import http from "http";
@@ -38,7 +39,9 @@ handleSocketConnection(io);
 
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listing);
-app.use("/api/chat", chatRoutes);
+app.use("/api", messageRoutes);
+app.use("/api", conversationRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 

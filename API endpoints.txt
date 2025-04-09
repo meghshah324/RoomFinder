@@ -1,0 +1,38 @@
+// Here are the API endpoints you'll need to implement on your backend:
+
+/**
+ * 1. GET /api/property/:id
+ * Returns details about a specific property listing
+ */
+
+/**
+ * 2. GET /api/conversations/property/:roomId
+ * Returns all conversations related to a specific property
+ * Each conversation should include:
+ * - _id (conversation ID)
+ * - buyerId
+ * - buyerName
+ * - propertyId
+ * - sellerId
+ * - lastMessageTime
+ * - createdAt
+ */
+
+/**
+ * 3. GET /api/conversations/:conversationId
+ * Returns details about a specific conversation
+ * Should include buyer and seller information
+ */
+
+/**
+ * 4. GET /api/conversations/:conversationId/messages
+ * Returns all messages for a specific conversation
+ * Optional query param: ?after=timestamp to get only newer messages
+ */
+
+/**
+ * 5. POST /api/conversations/:conversationId/messages
+ * Creates a new message in the conversation
+ * Request body: { senderId, text }
+ * Returns the created message
+ */
