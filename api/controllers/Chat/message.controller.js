@@ -11,15 +11,17 @@ export const getMessagesByConversation = async (req, res) => {
 };
 
 export const createMessage = async (req, res) => {
+  console.log("createMessage", req.body, req.params);
   try {
-    const { senderId, text } = req.body;
+    const { senderId, message} = req.body;
     const { conversationId } = req.params;
     const newMessage = new Message({
       conversationId,
       senderId,
-      text
+      message
     });
     const saved = await newMessage.save();
+    console.log("saved", saved);
     res.status(201).json(saved);
   } catch (err) {
     res.status(500).json({ error: err.message });

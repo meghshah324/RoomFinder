@@ -14,46 +14,41 @@ const MessagesListPage = () => {
   useEffect(() => {
     const fetchConversations = async () => {
       setLoading(true);
+      console.log("Fetching conversations for roomId:", roomId);
+      
       try {
-        // Simulated property data
+ 
+        const response = await fetch(`http://localhost:3000/api/conversations/property/${roomId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const conversationsResponse = await response.json();
+        setConversations(conversationsResponse);   
         const mockProperty = {
           roomType: "Single Room",
           buildingType: "Apartment",
           location: "Koramangala, Bangalore",
         };
         setProperty(mockProperty);
-  
-        // Simulated conversation data
-        const mockConversations = [
-          {
-            _id: "conv1",
-            buyerName: "Alice Johnson",
-            lastMessageTime: new Date().toISOString(),
-          },
-          {
-            _id: "conv2",
-            buyerName: "Bob Smith",
-            lastMessageTime: new Date(Date.now() - 3600 * 1000).toISOString(), // 1 hour ago
-          },
-          {
-            _id: "conv3",
-            buyerName: "Charlie Lee",
-            lastMessageTime: new Date(Date.now() - 86400 * 1000).toISOString(), // 1 day ago
-          },
-        ];
-        setConversations(mockConversations);
-  
-        setLoading(false);
+        console.log("Conversations fetched:", conversationsResponse);
       } catch (err) {
         setError("Failed to load conversations. Please try again.");
+        console.error("Fetch error:", err);
+      } finally {
         setLoading(false);
-        console.error(err);
       }
     };
   
-    fetchConversations();
+    if (roomId) {  
+      fetchConversations();
+    }
   }, [roomId]);
-  
 
   if (loading) {
     return (
@@ -124,7 +119,13 @@ const MessagesListPage = () => {
                     </div>
                   </div>
                   <button
-                    onClick={() => navigate(`/chat/${roomId}/${conversation._id}`)}
+                    onClick={() => navigate(`/messages/${conversation._id}`,{
+                      state: {
+                        buyerId: conversation.buyerId,
+                        sellerId: conversation.sellerId,
+                        propertyId: conversation.propertyId
+                      }
+                    })}
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center"
                   >
                     <MessageCircle size={16} className="mr-1" />

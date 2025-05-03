@@ -15,6 +15,7 @@ import ChatbotUI from "./components/ChatCard.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import MessagesListPage from "./components/Messages.jsx";
 import ChatPage from "./components/ChatPage.jsx";
+import ChatBot from "./components/ChatCardForProfile.jsx";
 
 
 export default function App() {
@@ -40,7 +41,9 @@ export default function App() {
         <Route path="/property/:id" element={<Property />} />
         <Route path="/rooms" element={<RoommateCard />} />
         <Route path="/chat" element={<ChatbotUI />} />
-        <Route path="/messages" element={<MessagesListPage />} />
+        <Route path="/chat/:conversationId" element={<ChatbotUI />} />
+        <Route path="/messages/:conversationId" element={<ChatBot />} />
+        <Route path="/chatMessages/:roomId" element={<MessagesListPage />} />
         <Route path="/chatpage" element={<ChatPage />} />
       </Routes>
       </AuthProvider>

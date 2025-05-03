@@ -40,9 +40,10 @@ const ProfilePage = () => {
             credentials: "include",
           }
         );
-        console.log(res);
+
         if (!res.ok) throw new Error("Failed to fetch rooms");
         const data = await res.json();
+        console.log(data);
         setListings(data || []);
       } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -146,116 +147,113 @@ const ProfilePage = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols grid-cols-2 gap-6 w-full">
-                {listings.map((room) => (
-                  <div
-                    key={room._id}
-                    onClick={() => navigate(`/property/${room._id}`)}
-                    className="cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-                  >
-                    <div className="relative h-48 w-full">
-                      <img
-                        src={img1}
-                        alt={room.description || "Room image"}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-              
-                    {/* Card content */}
-                    <div className="p-4">
-                      {/* Title and basic info */}
-                      <div className="mb-3">
-                        <h3 className="font-semibold text-lg text-gray-800 line-clamp-1">
-                          {room.roomType} in {room.buildingType}
-                        </h3>
-                        <div className="flex items-center text-gray-600 mt-1">
-                          <MapPinned
-                            size={14}
-                            className="mr-1 flex-shrink-0"
-                          />
-                          <span className="text-sm line-clamp-1">
-                            {room.location}
-                          </span>
-                        </div>
-                      </div>
-              
-                      {/* Price highlight */}
-                      <div className="flex items-center mb-3">
-                        <IndianRupee
-                          size={16}
-                          className="text-gray-700 mr-1"
+                  {listings.map((room) => (
+                    <div
+                      key={room._id}
+                      onClick={() => navigate(`/property/${room._id}`)}
+                      className="cursor-pointer bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                    >
+                      <div className="relative h-48 w-full">
+                        <img
+                          src={img1}
+                          alt={room.description || "Room image"}
+                          className="w-full h-full object-cover"
                         />
-                        <span className="text-lg font-bold text-gray-800">
-                          {room.rent?.toLocaleString() || "N/A"}
-                        </span>
-                        <span className="text-gray-500 text-sm ml-1">
-                          /month
-                        </span>
                       </div>
-              
-                      {/* Quick facts */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 bg-gray-50 rounded-lg p-2 mb-4">
-                        <div className="flex flex-col items-center p-1">
-                          <span className="text-xs text-gray-500">Type</span>
-                          <span className="text-sm font-medium">
-                            {room.roomType || "Any"}
+
+                      {/* Card content */}
+                      <div className="p-4">
+                        {/* Title and basic info */}
+                        <div className="mb-3">
+                          <h3 className="font-semibold text-lg text-gray-800 line-clamp-1">
+                            {room.roomType} in {room.buildingType}
+                          </h3>
+                          <div className="flex items-center text-gray-600 mt-1">
+                            <MapPinned
+                              size={14}
+                              className="mr-1 flex-shrink-0"
+                            />
+                            <span className="text-sm line-clamp-1">
+                              {room.location}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Price highlight */}
+                        <div className="flex items-center mb-3">
+                          <IndianRupee
+                            size={16}
+                            className="text-gray-700 mr-1"
+                          />
+                          <span className="text-lg font-bold text-gray-800">
+                            {room.rent?.toLocaleString() || "N/A"}
+                          </span>
+                          <span className="text-gray-500 text-sm ml-1">
+                            /month
                           </span>
                         </div>
-                        <div className="flex flex-col items-center p-1">
-                          <span className="text-xs text-gray-500">For</span>
-                          <span className="text-sm font-medium">
-                            {room.genderLookingFor || "Any"}
-                          </span>
+
+                        {/* Quick facts */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 bg-gray-50 rounded-lg p-2 mb-4">
+                          <div className="flex flex-col items-center p-1">
+                            <span className="text-xs text-gray-500">Type</span>
+                            <span className="text-sm font-medium">
+                              {room.roomType || "Any"}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-center p-1">
+                            <span className="text-xs text-gray-500">For</span>
+                            <span className="text-sm font-medium">
+                              {room.genderLookingFor || "Any"}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-center p-1">
+                            <span className="text-xs text-gray-500">
+                              Occupation
+                            </span>
+                            <span className="text-sm font-medium">
+                              {room.occupation || "Any"}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex flex-col items-center p-1">
-                          <span className="text-xs text-gray-500">
-                            Occupation
-                          </span>
-                          <span className="text-sm font-medium">
-                            {room.occupation || "Any"}
-                          </span>
+
+                        {/* Action buttons */}
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/chatMessages/${room._id}`);
+                            }}
+                            className="flex-1 bg-white border border-blue-100 hover:bg-blue-50 text-blue-600 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
+                          >
+                            <MessageCircle size={14} />
+                            <span>Message</span>
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/edit-listing/${room.postedBy._id}`);
+                            }}
+                            className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
+                          >
+                            <Edit size={14} />
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteListing(room._id);
+                            }}
+                            className="flex-1 bg-white border border-red-100 hover:bg-red-50 text-red-600 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
+                          >
+                            <Trash2 size={14} />
+                            <span>Delete</span>
+                          </button>
                         </div>
                       </div>
-              
-                      {/* Action buttons */}
-                      <div className="flex gap-2">
-                        <Link to={`/messages`}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/profilepage`);
-                          }}
-                          className="flex-1 bg-white border border-blue-100 hover:bg-blue-50 text-blue-600 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
-                        >
-                          <MessageCircle size={14} />
-                          <span>Message</span>
-                        </button>
-                        </Link>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/edit-listing/${room._id}`);
-                          }}
-                          className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
-                        >
-                          <Edit size={14} />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteListing(room._id);
-                          }}
-                          className="flex-1 bg-white border border-red-100 hover:bg-red-50 text-red-600 py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 text-sm"
-                        >
-                          <Trash2 size={14} />
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                      
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
               )}
             </div>
           )}

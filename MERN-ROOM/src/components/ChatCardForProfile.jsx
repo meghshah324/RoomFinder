@@ -1,82 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const socket = io("http://localhost:3000");
 
-const ChatbotUI = () => {
+const ChatBot = () => {
   const location = useLocation();
-  const { roomIdDetails } = location.state || {};
+  const { buyerId, sellerId, propertyId } = location.state || {};
+  const { conversationId } = useParams();
   const { userId } = useAuthContext();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [conversationId, setConversationId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const messagesEndRef = useRef(null);
 
   const generateRoomID = (buyerId, sellerId, listingId) => {
+    if (!buyerId || !sellerId || !listingId) return null;
     const sortedIds = [buyerId, sellerId].sort().join("_");
     return `${sortedIds}_${listingId}`;
   };
 
-  const roomId = roomIdDetails
-    ? generateRoomID(
-        roomIdDetails.buyerId,
-        roomIdDetails.sellerId,
-        roomIdDetails.roomId
-      )
-    : "";
+  const roomId = generateRoomID(buyerId, sellerId, propertyId);
 
   useEffect(() => {
-    if (!roomIdDetails) return;
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
+    if (!conversationId) return;
 
     const fetchMessages = async () => {
+      setLoading(true);
       try {
-        const conversationResponse = await fetch(
-          `http://localhost:3000/api/conversations/get-or-create`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              buyerId: roomIdDetails.buyerId,
-              sellerId: roomIdDetails.sellerId,
-              propertyId: roomIdDetails.roomId,
-            }),
-          }
-        );
-
-        if (!conversationResponse.ok)
-          throw new Error("Failed to create conversation");
-
-        const conversationData = await conversationResponse.json();
-        setConversationId(conversationData._id);
-
         const messagesResponse = await fetch(
-          `http://localhost:3000/api/conversations/${conversationData._id}/messages`
+          `http://localhost:3000/api/conversations/${conversationId}/messages`
         );
 
-        if (!messagesResponse.ok)
-          throw new Error("Failed to fetch messages");
+        if (!messagesResponse.ok) throw new Error("Failed to fetch messages");
 
         const messagesData = await messagesResponse.json();
         setMessages(messagesData);
 
-        socket.emit("joinConversation", roomId);
+        if (roomId) {
+          socket.emit("joinConversation", roomId);
+        }
 
         socket.on("receiveMessage", (newMessage) => {
           setMessages((prev) => {
-            const exists = prev.some(
+            const alreadyExists = prev.some(
               (msg) =>
                 msg.timestamp === newMessage.timestamp &&
                 msg.senderId === newMessage.senderId
             );
-            return exists ? prev : [...prev, newMessage];
+            return alreadyExists ? prev : [...prev, newMessage];
           });
         });
       } catch (error) {
-        console.error("Error fetching messages:", error);
+        console.error("Chat initialization error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -84,14 +68,16 @@ const ChatbotUI = () => {
 
     return () => {
       socket.off("receiveMessage");
-      socket.emit("leaveConversation", roomId);
+      if (roomId) {
+        socket.emit("leaveConversation", roomId);
+      }
     };
-  }, [roomId]);
+  }, [conversationId, roomId]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || !conversationId) return;
 
-    const message = {
+    const newMessage = {
       senderId: userId,
       message: inputMessage,
       timestamp: new Date().toISOString(),
@@ -100,16 +86,18 @@ const ChatbotUI = () => {
     setInputMessage("");
 
     try {
-      socket.emit("sendMessage", { roomId, message });
+      // Emit via socket
+      if (roomId) {
+        socket.emit("sendMessage", { roomId, message: newMessage });
+      }
 
+      // Save to DB
       await fetch(
         `http://localhost:3000/api/conversations/${conversationId}/messages`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(message),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newMessage),
         }
       );
     } catch (error) {
@@ -142,8 +130,12 @@ const ChatbotUI = () => {
     </div>
   );
 
-  if (!roomIdDetails) {
-    return <div className="p-4 text-center">No chat room selected.</div>;
+  if (!conversationId) {
+    return <div className="p-4 text-center">No conversation selected</div>;
+  }
+
+  if (loading) {
+    return <div className="p-4 text-center">Loading chat...</div>;
   }
 
   return (
@@ -158,6 +150,7 @@ const ChatbotUI = () => {
             message={message}
           />
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="flex p-4 border-t">
         <input
@@ -167,10 +160,12 @@ const ChatbotUI = () => {
           onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           placeholder="Type a message..."
           className="flex-grow px-3 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          disabled={!conversationId}
         />
         <button
           onClick={handleSendMessage}
-          className="bg-green-500 text-white px-4 py-2 rounded-r-lg hover:bg-green-600 transition"
+          disabled={!inputMessage.trim() || !conversationId}
+          className="bg-green-500 text-white px-4 py-2 rounded-r-lg hover:bg-green-600 transition disabled:opacity-50"
         >
           <Send className="w-5 h-5" />
         </button>
@@ -179,4 +174,4 @@ const ChatbotUI = () => {
   );
 };
 
-export default ChatbotUI;
+export default ChatBot;
