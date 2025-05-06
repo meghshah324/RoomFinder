@@ -16,7 +16,10 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import MessagesListPage from "./components/Messages.jsx";
 import ChatPage from "./components/ChatPage.jsx";
 import ChatBot from "./components/ChatCardForProfile.jsx";
-
+import MyListings from "./pages/MyListing.jsx";
+import EditProfile from "./pages/EditProfile.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
+import Footer from "./components/Footer.jsx";
 
 export default function App() {
   return (
@@ -39,13 +42,16 @@ export default function App() {
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<SingUp />} />
         <Route path="/property/:id" element={<Property />} />
+        <Route path="/my-listings" element={<MyListings />} />
         <Route path="/rooms" element={<RoommateCard />} />
         <Route path="/chat" element={<ChatbotUI />} />
         <Route path="/chat/:conversationId" element={<ChatbotUI />} />
         <Route path="/messages/:conversationId" element={<ChatBot />} />
         <Route path="/chatMessages/:roomId" element={<MessagesListPage />} />
         <Route path="/chatpage" element={<ChatPage />} />
+        <Route path="/profile" element={<MyProfile />} />
       </Routes>
+      <Footer />
       </AuthProvider>
     </BrowserRouter>
 

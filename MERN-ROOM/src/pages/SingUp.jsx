@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { use } from "react";
-
+import { useAuthContext } from "../context/AuthContext";
 
 // const navigate = useNavigate();
 
 export default function SignUp() {
+  const { refreshUser, handleLogin, handleLogout } = useAuthContext();
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -50,11 +51,13 @@ export default function SignUp() {
 
       if (data.success == false) {
         setLoading(false);
+        handleLogout();
         setError(data.messsage || "Operation failed.");
         return;
+      }else{
+        handleLogin();
+        refreshUser(); 
       }
-
-      //Reset form on success
       setFormData({
         username: "",
         email: "",

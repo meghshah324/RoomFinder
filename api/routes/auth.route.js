@@ -1,13 +1,21 @@
 import express from "express"
 import { signup } from "../controllers/auth.controller.js";
-import { Login } from "../controllers/login.controller.js";
+import { Login, Logout } from "../controllers/login.controller.js";
 import { authMiddleware } from "../middleware/authMiddleware.js"
 import User from "../models/user.model.js";
+import { editPassword, editProfile } from "../controllers/editProfile.controller.js";
+import { deleteAccount } from "../controllers/deleteAccount.controller.js";
 
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/signin", Login);
+router.post("/logout",Logout);
+router.post("/edit-profile/:userId",editProfile);
+router.put("/edit-password/:userId",editPassword);
+router.delete("/delete-account/:userId", deleteAccount);
+
+    
 router.get("/me", authMiddleware, async (req, res) => {
      const userId = req.user.userId;
      try {

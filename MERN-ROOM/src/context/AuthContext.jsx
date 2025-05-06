@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState(null);
   const [email, setEmail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const fetchUser = async () => {
     try {
@@ -19,9 +20,8 @@ export const AuthProvider = ({ children }) => {
         setUserId(data.userId);
         setEmail(data.email);
         setUserName(data.username);
-      
+        setIsLoggedIn(true);
       } else {
-        console.error('Error fetching user:');
         setUserId(null);
         setUserName(null);
         setEmail(null);
@@ -40,8 +40,24 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  const refreshUser = () => {
+    setLoading(true);
+    fetchUser(); 
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    fetchUser();
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+
+
   return (
-    <AuthContext.Provider value={{ userId, loading, userName , email}}>
+    <AuthContext.Provider value={{ userId, loading, userName , email , refreshUser ,handleLogin ,handleLogout , isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );

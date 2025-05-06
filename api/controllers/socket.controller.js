@@ -1,5 +1,4 @@
 import { Server, Socket } from "socket.io";
-import createMessage from "../services/messageService.js";
 
 const handleSocketConnection = (io) => {
   io.on("connection", (socket) => {

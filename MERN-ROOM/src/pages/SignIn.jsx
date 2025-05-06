@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const { refreshUser , handleLogin , handleLogout } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -22,13 +24,15 @@ const Login = () => {
       });
 
       const data = await res.json();
-      console.log("Response loginStatus:", data);
 
       if (!res.ok || data.success === false) {
         setErrorMsg(data.message || "Invalid login credentials");
+        handleLogout();
         return;
+      }else{
+        handleLogin();
+        refreshUser(); 
       }
-
       setErrorMsg("");
       navigate("/");
     } catch (error) {
