@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Profile2 from "./pages/Profile2.jsx"
 import Login from "./pages/SignIn";
@@ -20,6 +19,8 @@ import MyListings from "./pages/MyListing.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import Footer from "./components/Footer.jsx";
+import MultiImageUploader from "./pages/ImageUpload.jsx";
+import Temp from "./pages/temp.jsx";
 
 export default function App() {
   return (
@@ -28,13 +29,14 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        {/* <Route path="/about" element={<MultiImageUploader />} /> */}
         <Route path="/form/*"
           element={
             <FromProvide>
               <Routes>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile2" element={<Profile2 />} />
+                <Route path="/profile3/:residenceId" element={<MultiImageUploader />} />
               </Routes>
             </FromProvide>
           } />
@@ -50,6 +52,7 @@ export default function App() {
         <Route path="/chatMessages/:roomId" element={<MessagesListPage />} />
         <Route path="/chatpage" element={<ChatPage />} />
         <Route path="/profile" element={<MyProfile />} />
+        <Route path="/temp" element={<Temp />} />
       </Routes>
       <Footer />
       </AuthProvider>

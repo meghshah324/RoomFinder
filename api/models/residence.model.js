@@ -8,7 +8,13 @@ const residenceSchema = new mongoose.Schema({
   location: { type: String, required: true },
   description: { type: String, required: true },
   occupation: { type: String, required: true },
-  postedBy : {type : mongoose.Schema.Types.ObjectId,ref :"User"},
+  photos: [
+    {
+      public_id: String,
+      url: String,
+    },
+  ],
+  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" },
   lifestyle: { type: mongoose.Schema.Types.ObjectId, ref: "LifeStyle" },
 });

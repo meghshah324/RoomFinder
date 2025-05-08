@@ -105,7 +105,7 @@ const MyListings = () => {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {listings.map((room) => (
                 <div
                   key={room._id}
@@ -113,7 +113,7 @@ const MyListings = () => {
                 >
                   <div className="relative h-64 w-full overflow-hidden">
                     <img
-                      src={img1}
+                      src={room?.photos?.[0]?.url || img1} 
                       alt={room.description || "Room image"}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

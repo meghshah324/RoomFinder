@@ -14,6 +14,7 @@ function Property() {
   const [amenities, setAmenities] = useState({});
   const [lifeStyle, setLifeStyle] = useState({});
   const [basicInfo, setBasicInfo] = useState({});
+  const [images,setImages] = useState([]);
   const [roomIdDetails, setRoomIdDetails] = useState({});
   const { userId } = useAuthContext();
   const { id } = useParams();
@@ -28,6 +29,7 @@ function Property() {
         setRoom(data);
         setAmenities(data.amenities || {});
         setLifeStyle(data.lifestyle || {});
+        setImages(data.photos || []);
         const newRoomIdDetails = {
           sellerId: data.postedBy._id,
           sellerName : data.postedBy.username,
@@ -62,7 +64,7 @@ function Property() {
         </div>
         <div className="flex-1 space-y-4">
           <div className="rounded-2xl shadow-md bg-white p-4">
-            <ImageScroller />
+            <ImageScroller images = {images} />
           </div>
           <div className="rounded-2xl shadow-md bg-white p-4 space-y-4">
             <Location location={room.location} />

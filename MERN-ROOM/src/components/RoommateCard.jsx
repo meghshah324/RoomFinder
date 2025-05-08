@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IndianRupee, MapPinned, Filter, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import img1  from "../assets/img1.jpeg"
+import img1 from "../assets/img1.jpeg";
 
 const RoomFinder = () => {
   const [rooms, setRooms] = useState([]);
@@ -14,6 +14,8 @@ const RoomFinder = () => {
   const [priceRange, setPriceRange] = useState(100000);
   const [location, setLocation] = useState("");
   const [occupation, setOccupation] = useState("");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -65,7 +67,6 @@ const RoomFinder = () => {
 
   return (
     <div className="bg-white rounded-xl m-4 p-6">
-     
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
           Available Roommates ({filteredRooms.length})
@@ -79,7 +80,6 @@ const RoomFinder = () => {
         </button>
       </div>
 
-   
       {showFilters && (
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
           <div className="grid md:grid-cols-4 gap-6">
@@ -181,7 +181,6 @@ const RoomFinder = () => {
         </div>
       )}
 
- 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {error && (
           <div className="col-span-full text-red-600 text-center">{error}</div>
@@ -194,11 +193,19 @@ const RoomFinder = () => {
           >
             <div className="flex flex-col sm:flex-row items-center">
               <div className="w-24 h-24 overflow-hidden rounded-lg mb-4 sm:mb-0">
-                <img
-                  src={img1}
-                  alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  {!isImageLoaded && (
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                  )}
+                  <img
+                    src={room?.photos?.[0]?.url || img1} 
+                    alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
+                    className={`w-full h-full object-cover transition-opacity duration-300 ${
+                      isImageLoaded ? "opacity-100" : "opacity-0"
+                    }`}
+                    onLoad={() => setIsImageLoaded(true)}
+                  />
+                </div>
               </div>
               <div className="sm:ml-4 flex-1">
                 <h2 className="text-lg font-semibold">

@@ -53,7 +53,10 @@ export const postList = async (req, res) => {
       amenities: newAmenity._id,
       lifestyle: lifeStyle._id
     });
-    res.status(200).json({ message: "Post Created Successfully" });
+    
+    res.status(200).json({ message: "Post Created Successfully",
+      postId : residence._id
+    });
     console.log("Residence created:", residence);
   } catch (error) {
     console.error("Error creating post:", error);

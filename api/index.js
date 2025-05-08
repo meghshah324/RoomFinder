@@ -10,14 +10,17 @@ import { Server as SocketIOServer } from "socket.io";
 import http from "http";
 import handleSocketConnection  from "./controllers/socket.controller.js";
 import connectMongo from "./config/mongo.config.js";
+import bodyParser from "body-parser";
 
 dotenv.config();
 connectMongo();
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 const httpServer = http.createServer(app);
 const io = new SocketIOServer(httpServer, {

@@ -40,9 +40,6 @@ function Profile() {
     );
   };
 
-  console.log(formData);
-
-
 
 
   return (
