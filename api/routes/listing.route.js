@@ -21,4 +21,5 @@ router.get("/search", findRooms);
 router.get("/rooms", rooms);
 router.post("/upload/image/:id", authMiddleware, uploadImages);
 
+
 export default router;

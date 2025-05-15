@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-
-// const navigate = useNavigate();
+import AlertMessage from "../components/Alert";
+import { set } from "mongoose";
 
 export default function SignUp() {
   const { refreshUser, handleLogin, handleLogout } = useAuthContext();
+  const [alert, setAlert] = useState(null);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -54,9 +55,9 @@ export default function SignUp() {
         handleLogout();
         setError(data.messsage || "Operation failed.");
         return;
-      }else{
+      } else {
         handleLogin();
-        refreshUser(); 
+        refreshUser();
       }
       setFormData({
         username: "",
@@ -68,10 +69,22 @@ export default function SignUp() {
       console.log(formData);
       setError(null);
       setLoading(false);
-      console.log("Form submitted successfully:", data);
+      setAlert({
+        type: "success",
+        message: "Registration successful! Redirecting to login...",
+        autoClose: 3000,
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.error("Error during form submission:", error);
       setLoading(false);
+      setAlert({
+        type: "error",
+        message: "Something went wrong. Please try again.",
+        autoClose: 5000,
+      });
       setError(error.message || "A network error occurred.");
     }
   };
@@ -214,6 +227,16 @@ export default function SignUp() {
             Login
           </button>
         </p>
+        <div className="fixed inset-0 z-50 pointer-events-none">
+          {alert && (
+            <AlertMessage
+              type={alert.type}
+              message={alert.message}
+              onClose={() => setAlert(null)}
+              autoClose={alert.autoClose}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

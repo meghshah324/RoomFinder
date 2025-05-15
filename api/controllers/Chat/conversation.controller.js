@@ -5,12 +5,12 @@ export const getOrCreateConversation = async (req, res) => {
   const { buyerId, sellerId, propertyId } = req.body;
 
   try {
-    let conversation = await Conversation.findOne({ buyerId, sellerId, propertyId });
+    const conversation = await Conversation.findOneAndUpdate(
+      { buyerId, sellerId, propertyId },
+      { $setOnInsert: { buyerId, sellerId, propertyId } },
+      { upsert: true, new: true }
+    );
 
-    if (!conversation) {
-      conversation = new Conversation({ buyerId, sellerId, propertyId });
-      await conversation.save();
-    }
     res.status(200).json(conversation);
   } catch (err) {
     res.status(500).json({ error: err.message });

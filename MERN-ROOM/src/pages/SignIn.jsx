@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import AlertMessage from "../components/Alert.jsx";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const { refreshUser , handleLogin , handleLogout } = useAuthContext();
+  const { refreshUser, handleLogin, handleLogout } = useAuthContext();
+  const [alert, setAlert] = useState(null);
 
   const navigate = useNavigate();
 
@@ -29,15 +31,26 @@ const Login = () => {
         setErrorMsg(data.message || "Invalid login credentials");
         handleLogout();
         return;
-      }else{
+      } else {
         handleLogin();
-        refreshUser(); 
+        refreshUser();
       }
       setErrorMsg("");
-      navigate("/");
+      setAlert({
+        type: "success",
+        message: "Login successful!",
+        autoClose: 3000,
+      });
+      console.log("Current alert state:", alert);
+      setTimeout(() => navigate("/"), 3000);
     } catch (error) {
       console.log("Error during login:", error);
       setErrorMsg("Something went wrong. Please try again.");
+      setAlert({
+        type: "error",
+        message: "Something went wrong. Please try again.",
+        autoClose: 5000,
+      });
     }
   };
 
@@ -97,7 +110,7 @@ const Login = () => {
         >
           Login
         </button>
-    
+
         <p className="mt-4 text-sm text-gray-600 text-center">
           Dont't have an account?{" "}
           <button
@@ -107,6 +120,16 @@ const Login = () => {
           >
             Create one
           </button>
+          <div className="fixed inset-0 z-50 pointer-events-none">
+            {alert && (
+              <AlertMessage
+                type={alert.type}
+                message={alert.message}
+                onClose={() => setAlert(null)}
+                autoClose={alert.autoClose}
+              />
+            )}
+          </div>
         </p>
       </form>
     </div>

@@ -1,31 +1,32 @@
-import React, { useState, useRef } from 'react';
-import { Upload, X, Check, AlertCircle, Loader } from 'lucide-react';
-import { useFormContext } from '../context/FormContext';
+import React, { useState, useRef } from "react";
+import { Upload, X, Check, AlertCircle, Loader } from "lucide-react";
+import { useFormContext } from "../context/FormContext";
 import { useParams } from "react-router-dom";
+import AlertMessage from "../components/Alert.jsx";
+import { useNavigate } from "react-router-dom";
 
-
-const PremiumMultiImageUploader = (req,res) => {
+const PremiumMultiImageUploader = (req, res) => {
   const { formData, setFormData } = useFormContext();
   const [images, setImages] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [alert, setAlert] = useState(null);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   console.log(req.params);
-  const { residenceId } = useParams();;
+  const { residenceId } = useParams();
 
-
-  
   const MAX_IMAGES = 5;
   const MAX_SIZE_MB = 5;
-  
+
   const simulateProgress = () => {
     setUploadProgress(0);
     const interval = setInterval(() => {
-      setUploadProgress(prev => {
+      setUploadProgress((prev) => {
         if (prev >= 90) {
           clearInterval(interval);
           return prev;
@@ -33,31 +34,31 @@ const PremiumMultiImageUploader = (req,res) => {
         return prev + Math.floor(Math.random() * 10);
       });
     }, 300);
-    
+
     return () => clearInterval(interval);
   };
-  
+
   const validateFile = (file) => {
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       return `${file.name} exceeds the ${MAX_SIZE_MB}MB limit`;
     }
-    
-    if (!file.type.startsWith('image/')) {
+
+    if (!file.type.startsWith("image/")) {
       return `${file.name} is not a valid image file`;
     }
-    
+
     return null;
   };
 
   const handleFiles = (files) => {
-    setError('');
+    setError("");
     const fileArray = Array.from(files);
-    
+
     if (fileArray.length + images.length > MAX_IMAGES) {
       setError(`You can upload a maximum of ${MAX_IMAGES} images`);
       return;
     }
-    
+
     for (const file of fileArray) {
       const error = validateFile(file);
       if (error) {
@@ -65,21 +66,23 @@ const PremiumMultiImageUploader = (req,res) => {
         return;
       }
     }
-    
-    const imagePromises = fileArray.map((file) =>
-      new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve({
-          name: `${Date.now()}-${file.name}`,
-          base64: reader.result,
-          file: file
-        });
-        reader.readAsDataURL(file);
-      })
+
+    const imagePromises = fileArray.map(
+      (file) =>
+        new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () =>
+            resolve({
+              name: `${Date.now()}-${file.name}`,
+              base64: reader.result,
+              file: file,
+            });
+          reader.readAsDataURL(file);
+        })
     );
-    
-    Promise.all(imagePromises).then(newImages => {
-      setImages(prevImages => [...prevImages, ...newImages]);
+
+    Promise.all(imagePromises).then((newImages) => {
+      setImages((prevImages) => [...prevImages, ...newImages]);
     });
   };
 
@@ -108,7 +111,7 @@ const PremiumMultiImageUploader = (req,res) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFiles(e.dataTransfer.files);
     }
@@ -120,48 +123,63 @@ const PremiumMultiImageUploader = (req,res) => {
 
   const handleUpload = async () => {
     if (images.length === 0) {
-      setError('Please select at least one image');
+      setError("Please select at least one image");
       return;
     }
-  
+
     setIsUploading(true);
     const stopSimulation = simulateProgress();
-  
+
     try {
       const formData = new FormData();
-      images.forEach(image => {
-        formData.append('images', image.file);
+      images.forEach((image) => {
+        formData.append("images", image.file);
       });
-      
+
       const res = await fetch(`/api/listing/upload/image/${residenceId}`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
-        // First check if the response is JSON
+      // First check if the response is JSON
 
-      const contentType = res.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
         const text = await res.text();
-        throw new Error(text || 'Server returned non-JSON response');
+        throw new Error(text || "Server returned non-JSON response");
       }
-  
+
       const data = await res.json();
       setUploadProgress(100);
-      setFormData({postId : ''});
-  
+      setFormData({ postId: "" });
+
       if (!res.ok) {
-        throw new Error(data.message || 'Upload failed');
+        throw new Error(data.message || "Upload failed");
       }
-  
-      setUploadedImages(prev => [...prev, ...data.images]);
+
+      setUploadedImages((prev) => [...prev, ...data.images]);
+      setAlert({
+        type: "success",
+        message: "Images uploaded successfully",
+        autoClose: 3000,
+      });
       setImages([]);
+      setTimeout(() => {
+        setAlert(null);
+        navigate("/");
+      }, 3000);
+
     } catch (error) {
-      console.error('Upload error:', error);
-      if (error.message.includes('<!DOCTYPE html>')) {
-        setError('Server error occurred. Please try again later.');
+      console.error("Upload error:", error);
+      if (error.message.includes("<!DOCTYPE html>")) {
+        setError("Server error occurred. Please try again later.");
       } else {
-        setError(error.message || 'Upload failed');
+        setError(error.message || "Upload failed");
       }
+      setAlert({
+        type: "error",
+        message: error.message || "Upload failed",
+        autoClose: 5000,
+      });
     } finally {
       setTimeout(() => setIsUploading(false), 500);
       clearTimeout(stopSimulation);
@@ -170,8 +188,9 @@ const PremiumMultiImageUploader = (req,res) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
-
-      <div className='flex justify-center text-green-500 font-bold text-2xl'>Upload Property Images</div>
+      <div className="flex justify-center text-green-500 font-bold text-2xl">
+        Upload Property Images
+      </div>
       <div className="border-2 border-dashed rounded-lg bg-gray-50 border-gray-300 relative">
         <input
           type="file"
@@ -181,9 +200,11 @@ const PremiumMultiImageUploader = (req,res) => {
           className="hidden"
           ref={fileInputRef}
         />
-        
+
         <div
-          className={`flex flex-col items-center justify-center p-12 text-center cursor-pointer ${isDragging ? 'bg-green-50' : ''}`}
+          className={`flex flex-col items-center justify-center p-12 text-center cursor-pointer ${
+            isDragging ? "bg-green-50" : ""
+          }`}
           onClick={() => fileInputRef.current.click()}
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
@@ -191,28 +212,34 @@ const PremiumMultiImageUploader = (req,res) => {
           onDrop={handleDrop}
         >
           <Upload size={48} className="text-green-500 mb-4" />
-          <p className="text-xl font-medium text-gray-700">Drag & drop your images here</p>
+          <p className="text-xl font-medium text-gray-700">
+            Drag & drop your images here
+          </p>
           <p className="text-sm text-gray-500 mt-2">or click to browse</p>
-          <p className="text-xs text-gray-400 mt-1">Up to {MAX_IMAGES} images, {MAX_SIZE_MB}MB each</p>
+          <p className="text-xs text-gray-400 mt-1">
+            Up to {MAX_IMAGES} images, {MAX_SIZE_MB}MB each
+          </p>
         </div>
       </div>
-      
+
       {error && (
         <div className="flex items-center p-4 text-red-800 bg-red-50 rounded-lg">
           <AlertCircle size={20} className="mr-2" />
           <span>{error}</span>
         </div>
       )}
-      
+
       {/* Preview area */}
       {images.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Selected Images ({images.length}/{MAX_IMAGES})</h3>
+          <h3 className="text-lg font-medium">
+            Selected Images ({images.length}/{MAX_IMAGES})
+          </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {images.map((image, index) => (
               <div key={index} className="relative group">
-                <img 
-                  src={image.base64} 
+                <img
+                  src={image.base64}
                   alt={`Preview ${index + 1}`}
                   className="w-full h-32 object-cover rounded-lg"
                 />
@@ -222,16 +249,20 @@ const PremiumMultiImageUploader = (req,res) => {
                 >
                   <X size={16} />
                 </button>
-                <p className="text-xs text-gray-500 truncate mt-1">{image.name.split('-').slice(1).join('-')}</p>
+                <p className="text-xs text-gray-500 truncate mt-1">
+                  {image.name.split("-").slice(1).join("-")}
+                </p>
               </div>
             ))}
           </div>
-          
+
           <button
             onClick={handleUpload}
             disabled={isUploading}
             className={`flex items-center justify-center px-6 py-3 rounded-lg text-white w-full 
-              ${isUploading ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'} transition-colors`}
+              ${
+                isUploading ? "bg-green-400" : "bg-green-600 hover:bg-green-700"
+              } transition-colors`}
           >
             {isUploading ? (
               <>
@@ -241,22 +272,23 @@ const PremiumMultiImageUploader = (req,res) => {
             ) : (
               <>
                 <Upload size={18} className="mr-2" />
-                Upload {images.length} {images.length === 1 ? 'Image' : 'Images'}
+                Upload {images.length}{" "}
+                {images.length === 1 ? "Image" : "Images"}
               </>
             )}
           </button>
-          
+
           {isUploading && (
             <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div 
-                className="bg-green-600 h-2.5 rounded-full transition-all duration-300" 
+              <div
+                className="bg-green-600 h-2.5 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               ></div>
             </div>
           )}
         </div>
       )}
-      
+
       {/* Uploaded images gallery */}
       {uploadedImages.length > 0 && (
         <div className="space-y-4">
@@ -267,7 +299,7 @@ const PremiumMultiImageUploader = (req,res) => {
               Successfully uploaded
             </div>
           </div>
-          
+
           {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {uploadedImages.map((image, index) => (
               <div key={index} className="relative">
@@ -283,11 +315,18 @@ const PremiumMultiImageUploader = (req,res) => {
         </div>
       )}
 
-
+      {alert && (
+        <div className="fixed top-4 right-4 z-50">
+          <AlertMessage
+            type={alert.type}
+            message={alert.message}
+            onClose={() => setAlert(null)}
+            autoClose={alert.autoClose}
+          />
+        </div>
+      )}
     </div>
   );
-
-
 };
 
 export default PremiumMultiImageUploader;

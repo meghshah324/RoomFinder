@@ -6,7 +6,6 @@ const handleSocketConnection = (io) => {
       socket.join(roomId);
     });
     socket.on("sendMessage", ({ roomId, message }) => {
-      // Send message to all users in this conversation
       io.to(roomId).emit("receiveMessage", message);
     });
     socket.on("disconnect", async () => {
