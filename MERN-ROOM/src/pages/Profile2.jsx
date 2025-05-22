@@ -21,9 +21,16 @@ function LifestyleForm() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      
+
       setFormData({
-        location: "",
+        address: {
+          street: "",
+          landmark: "",
+          city: "",
+          state: "",
+          postalCode: "",
+          country: "",
+        },
         rent: "",
         buildingType: "",
         roomType: "",
@@ -37,6 +44,7 @@ function LifestyleForm() {
         overnightGuest: "",
         occupation: "",
       });
+
       navigate(`/form/profile3/${data.postId}`);
     } catch (error) {
       console.error("Error during form submission:", error);

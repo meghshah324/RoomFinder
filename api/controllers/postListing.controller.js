@@ -8,7 +8,7 @@ export const postList = async (req, res) => {
       rent,
       buildingType,
       roomType,
-      location,
+      address,
       genderLookingFor,
       description,
       cleanliness,
@@ -17,7 +17,7 @@ export const postList = async (req, res) => {
       occupation,
       partyHabit,
       overnightGuest,
-      amenities 
+      amenities
     } = req.body;
 
     const amenityObject = {
@@ -29,7 +29,6 @@ export const postList = async (req, res) => {
       washingMachine: amenities.includes("washingMachine")
     };
 
-  
     const newAmenity = await amenitiesModel.create(amenityObject);
 
     const lifeStyle = await lifeStyleModel.create({
@@ -45,7 +44,14 @@ export const postList = async (req, res) => {
       rent,
       buildingType,
       roomType,
-      location,
+      address: {
+        street: address.street,
+        landmark: address.landmark,
+        city: address.city,
+        state: address.state,
+        zipCode: address.postalCode,
+        country: address.country
+      },
       genderLookingFor,
       description,
       occupation,
@@ -53,9 +59,10 @@ export const postList = async (req, res) => {
       amenities: newAmenity._id,
       lifestyle: lifeStyle._id
     });
-    
-    res.status(200).json({ message: "Post Created Successfully",
-      postId : residence._id
+
+    res.status(200).json({
+      message: "Post Created Successfully",
+      postId: residence._id
     });
     console.log("Residence created:", residence);
   } catch (error) {

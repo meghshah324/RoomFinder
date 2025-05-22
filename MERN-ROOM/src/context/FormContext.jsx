@@ -4,7 +4,14 @@ const FormContext = createContext();
 
 export const FromProvide = ({ children }) => {
       const [formData, setFormData] = useState({
-            location: '',
+            address:{
+                  street: '',
+                  landmark: '',
+                  city: '',
+                  state: '',
+                  postalCode: '',
+                  country: '',
+            },
             rent: '',
             buildingType: '',
             roomType: '',
@@ -19,6 +26,7 @@ export const FromProvide = ({ children }) => {
             amenities : [
             ]
       });
+      console.log(formData);
       return (
             <FormContext.Provider value={{ formData, setFormData }} >
                   {children}

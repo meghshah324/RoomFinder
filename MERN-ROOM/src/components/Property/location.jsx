@@ -3,6 +3,8 @@ import {MapPin} from 'lucide-react';
 
 
 function location({location}) {
+    if (!location) return null;
+    const { street,landmark,zipCode, city, state, country } = location;
   
     return (
         <>
@@ -15,7 +17,7 @@ function location({location}) {
                         <MapPin className="w-5 h-5 text-gray-600 mt-1" />
                         <div className="space-y-2">
                             <div className="text-lg text-gray-700">
-                                {location}
+                                {street}, {landmark}, {zipCode},{city}, {state}, {country}
                             </div>
                         </div>
                     </div>

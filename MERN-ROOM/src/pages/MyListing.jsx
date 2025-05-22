@@ -135,7 +135,7 @@ const MyListings = () => {
                       </h3>
                       <div className="flex items-center text-gray-600 mt-2">
                         <MapPinned size={16} className="mr-2 flex-shrink-0 text-green-600" />
-                        <span className="text-sm line-clamp-1">{room.location}</span>
+                        <span className="text-sm line-clamp-1">{room.address.city},{room.address.state},{room.address.country}</span>
                       </div>
                     </div>
 

@@ -19,6 +19,7 @@ import EditProfile from "./pages/EditProfile.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import Footer from "./components/Footer.jsx";
 import MultiImageUploader from "./pages/ImageUpload.jsx";
+import AddressForm from "./components/Address.jsx";
 
 export default function App() {
   return (
@@ -27,13 +28,13 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/about" element={<MultiImageUploader />} /> */}
         <Route path="/form/*"
           element={
             <FromProvide>
               <Routes>
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile2" element={<Profile2 />} />
+                 <Route path="/address" element={<AddressForm />} />
                 <Route path="/profile3/:residenceId" element={<MultiImageUploader />} />
               </Routes>
             </FromProvide>
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/messages/:conversationId" element={<ChatBot />} />
         <Route path="/chatMessages/:roomId" element={<MessagesListPage />} />
         <Route path="/profile" element={<MyProfile />} />
+  
       </Routes>
       <Footer />
       </AuthProvider>

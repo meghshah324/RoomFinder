@@ -16,7 +16,6 @@ const RoomFinder = () => {
   const [occupation, setOccupation] = useState("");
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -36,15 +35,32 @@ const RoomFinder = () => {
   const applyFilters = () => {
     const filtered = rooms.filter((room) => {
       const rentValue = parseInt(room.rent.replace(/,/g, ""));
+
       const matchesGender =
         genderPreference === "any" ||
         room.genderLookingFor?.toLowerCase() === genderPreference;
+
       const matchesRent = rentValue <= priceRange;
+
+
+      const fullAddress = [
+        room.address?.street,
+        room.address?.landmark,
+        room.address?.city,
+        room.address?.state,
+        room.address?.zipCode,
+        room.address?.country,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
       const matchesLocation =
-        location === "" ||
-        room.location?.toLowerCase().includes(location.toLowerCase());
+        location === "" || fullAddress.includes(location.toLowerCase());
+
       const occupationValue =
         room.occupation || room.lifestyle?.occupation || "";
+
       const matchesOccupation =
         occupation === "" ||
         occupationValue.toLowerCase().includes(occupation.toLowerCase());
@@ -198,7 +214,7 @@ const RoomFinder = () => {
                     <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                   )}
                   <img
-                    src={room?.photos?.[0]?.url || img1} 
+                    src={room?.photos?.[0]?.url || img1}
                     alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
                     className={`w-full h-full object-cover transition-opacity duration-300 ${
                       isImageLoaded ? "opacity-100" : "opacity-0"
@@ -213,7 +229,20 @@ const RoomFinder = () => {
                 </h2>
                 <div className="text-gray-600 flex items-center text-sm mt-1">
                   <MapPinned size={14} className="mr-1" />
-                  <p>{room.location || "No location specified"}</p>
+                  <p>
+                    {room.address
+                      ? [
+                          room.address.street,
+                          room.address.landmark,
+                          room.address.city,
+                          room.address.state,
+                          room.address.zipCode,
+                          room.address.country,
+                        ]
+                          .filter(Boolean)
+                          .join(", ")
+                      : "No location specified"}
+                  </p>
                 </div>
               </div>
             </div>

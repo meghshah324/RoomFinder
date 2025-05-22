@@ -14,29 +14,28 @@ function Property() {
   const [amenities, setAmenities] = useState({});
   const [lifeStyle, setLifeStyle] = useState({});
   const [basicInfo, setBasicInfo] = useState({});
-  const [images,setImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [roomIdDetails, setRoomIdDetails] = useState({});
   const { userId } = useAuthContext();
   const { id } = useParams();
-  
+
   useEffect(() => {
     const fetchRoom = async () => {
       try {
         const res = await fetch(`http://localhost:3000/api/listing/room/${id}`);
         if (!res.ok) throw new Error("Failed to fetch room");
         const data = await res.json();
-        console.log("Room Data",data);
+        console.log("Room Data", data);
         setRoom(data);
         setAmenities(data.amenities || {});
         setLifeStyle(data.lifestyle || {});
         setImages(data.photos || []);
         const newRoomIdDetails = {
           sellerId: data.postedBy._id,
-          sellerName : data.postedBy.username,
+          sellerName: data.postedBy.username,
           buyerId: userId,
           roomId: id,
         };
-        console.log("BuyerId",newRoomIdDetails);
         setRoomIdDetails(newRoomIdDetails);
         setBasicInfo({
           rent: data.rent,
@@ -49,25 +48,25 @@ function Property() {
       }
     };
     fetchRoom();
-  }, [id, userId]); 
+  }, [id, userId]);
 
   if (error) return <p>Error: {error}</p>;
   if (!room) return <p>Loading...</p>;
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-6 p-4 lg:p-8 bg-gray-50 min-h-screen">
+      <div className="w-auto flex flex-col lg:flex-row gap-6 p-4 lg:p-8 bg-gray-50 min-h-screen">
         <div className="w-full lg:w-1/5">
           <div className="sticky top-4 rounded-2xl p-4 ">
             <ProfileCard roomIdDetails={roomIdDetails} />
           </div>
         </div>
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 max-w-screen-lg w-full mx-auto">
           <div className="rounded-2xl shadow-md bg-white p-4">
-            <ImageScroller images = {images} />
+            <ImageScroller images={images} />
           </div>
           <div className="rounded-2xl shadow-md bg-white p-4 space-y-4">
-            <Location location={room.location} />
+            <Location location={room.address} />
             <BasicInfo info={basicInfo} />
             <Amenities amenities={amenities} />
             <LifeStyle lifeStyle={lifeStyle} />
