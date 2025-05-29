@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 export const editProfile = async (req, res) => {
   const { username, email } = req.body;
   const userId = req.params.userId;
-  console.log("User ID:", userId);
   try {
     const updatedUser = await User.findByIdAndUpdate(userId, {
       username,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { MessageCircle, ArrowLeft, User } from "lucide-react";
 
 const MessagesListPage = () => {
@@ -15,28 +14,23 @@ const MessagesListPage = () => {
     const fetchConversations = async () => {
       setLoading(true);
       console.log("Fetching conversations for roomId:", roomId);
-      
+
       try {
- 
-        const response = await fetch(`http://localhost:3000/api/conversations/property/${roomId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-  
+        const response = await fetch(
+          `http://localhost:3000/api/conversations/property/${roomId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const conversationsResponse = await response.json();
-        setConversations(conversationsResponse);   
-        const mockProperty = {
-          roomType: "Single Room",
-          buildingType: "Apartment",
-          location: "Koramangala, Bangalore",
-        };
-        setProperty(mockProperty);
-        console.log("Conversations fetched:", conversationsResponse);
+        setConversations(conversationsResponse);
       } catch (err) {
         setError("Failed to load conversations. Please try again.");
         console.error("Fetch error:", err);
@@ -44,8 +38,8 @@ const MessagesListPage = () => {
         setLoading(false);
       }
     };
-  
-    if (roomId) {  
+
+    if (roomId) {
       fetchConversations();
     }
   }, [roomId]);
@@ -62,7 +56,7 @@ const MessagesListPage = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <p className="text-red-500 mb-4">{error}</p>
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
         >
@@ -76,18 +70,16 @@ const MessagesListPage = () => {
     <div className="max-w-4xl mx-auto p-4">
       {/* Header */}
       <div className="mb-6">
-        <button 
-          onClick={() => navigate('/profilepage')} 
+        <button
+          onClick={() => navigate("/my-listings")}
           className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft size={18} className="mr-1" />
           <span>Back to Listings</span>
         </button>
-        
         <h1 className="text-2xl font-bold text-gray-800">
-          Messages for {property?.roomType} in {property?.buildingType}
+          Messages for this Room Listing
         </h1>
-        <p className="text-gray-600 mt-1">{property?.location}</p>
       </div>
 
       {/* Conversations List */}
@@ -97,7 +89,8 @@ const MessagesListPage = () => {
             <MessageCircle size={40} className="mx-auto text-gray-300 mb-3" />
             <h3 className="text-gray-700 font-medium mb-1">No Messages Yet</h3>
             <p className="text-gray-500">
-              When someone messages you about this property, they will appear here.
+              When someone messages you about this property, they will appear
+              here.
             </p>
           </div>
         ) : (
@@ -113,19 +106,21 @@ const MessagesListPage = () => {
                       <h3 className="font-medium text-gray-800">
                         {conversation.buyerName}
                       </h3>
-                      <p className="text-sm text-gray-500">
+                      {/* <p className="text-sm text-gray-500">
                         Last message: {new Date(conversation.lastMessageTime).toLocaleString()}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                   <button
-                    onClick={() => navigate(`/messages/${conversation._id}`,{
-                      state: {
-                        buyerId: conversation.buyerId,
-                        sellerId: conversation.sellerId,
-                        propertyId: conversation.propertyId
-                      }
-                    })}
+                    onClick={() =>
+                      navigate(`/messages/${conversation._id}`, {
+                        state: {
+                          buyerId: conversation.buyerId,
+                          sellerId: conversation.sellerId,
+                          propertyId: conversation.propertyId,
+                        },
+                      })
+                    }
                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center"
                   >
                     <MessageCircle size={16} className="mr-1" />

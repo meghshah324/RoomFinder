@@ -41,10 +41,9 @@ const Login = () => {
         message: "Login successful!",
         autoClose: 3000,
       });
-      console.log("Current alert state:", alert);
       setTimeout(() => navigate("/"), 3000);
     } catch (error) {
-      console.log("Error during login:", error);
+  
       setErrorMsg("Something went wrong. Please try again.");
       setAlert({
         type: "error",

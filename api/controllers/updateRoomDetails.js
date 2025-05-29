@@ -6,7 +6,6 @@ export const updateListing = async (req, res) => {
   if (!listing) {
     res.status(404).json({ error: "Listing Not Found" });
   }
-  console.log(listing);
   try {
     const updatedListing = await Residence.findByIdAndUpdate(postid, req.body, {
         new: true,

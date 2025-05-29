@@ -25,7 +25,7 @@ function Property() {
         const res = await fetch(`http://localhost:3000/api/listing/room/${id}`);
         if (!res.ok) throw new Error("Failed to fetch room");
         const data = await res.json();
-        console.log("Room Data", data);
+
         setRoom(data);
         setAmenities(data.amenities || {});
         setLifeStyle(data.lifestyle || {});

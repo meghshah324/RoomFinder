@@ -3,7 +3,7 @@ import React from 'react';
 export default function LifeStyle({lifeStyle}) {
   
     return (
-        <div className='m-10 bg-gray-100 p-5 rounded-lg shadow-sm w-auto'>
+        <div className='mx-6 mb-6 bg-gray-100 p-5 rounded-lg shadow-sm w-auto'>
             <h2 className='text-2xl font-semibold text-gray-800 mb-6'>
                 LifeStyle
             </h2>

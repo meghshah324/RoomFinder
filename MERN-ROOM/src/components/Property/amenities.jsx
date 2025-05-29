@@ -12,7 +12,7 @@ export default function Amenities({ amenities }) {
     ];
 
     return (
-        <div className="p-5 w-auto bg-gray-100 rounded-lg shadow-sm m-10">
+        <div className="p-5 w-auto bg-gray-100 rounded-lg shadow-sm mx-6 mb-6">
             <h3 className="text-2xl font-semibold text-gray-800 mb-6">Amenities</h3>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {amenitiesArr.map((amenity, index) => (

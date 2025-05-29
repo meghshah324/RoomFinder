@@ -9,7 +9,7 @@ export default function basicInfo({info}) {
 const { rent, buildingType, roomType, genderLookingFor } = info;
 return (
     <>
-        <div className="bg-gray-100 m-10 p-5 w-auto rounded-lg shadow-sm">
+        <div className="bg-gray-100 mx-6 mb-6 p-5 w-auto rounded-lg shadow-sm">
             <h3 className="text-2xl font-semibold text-gray-700 mb-6 flex items-center gap-2">
                 Basic Info
             </h3>

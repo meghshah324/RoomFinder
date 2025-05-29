@@ -53,7 +53,7 @@ export const uploadImages = async (req, res) => {
       });
 
     } catch (err) {
-      console.error('Upload failed:', err);
+
       res.status(500).json({ 
         message: 'Upload failed', 
         error: err.message 

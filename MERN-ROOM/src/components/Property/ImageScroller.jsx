@@ -11,7 +11,7 @@ export default function ImageScroller({ images = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState({});
 
-  console.log("Images", images);
+
 
   const scroll = (offset) => {
     if (scrollRef.current) {
