@@ -7,8 +7,7 @@ function Location({ location }) {
   const { street, landmark, zipCode, city, state, country } = location;
   const fullAddress = `${street}, ${landmark}, ${zipCode}, ${city}, ${state}, ${country}`;
 
-  // console.log("API Key:", import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
-  const apiKey = "";
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
     return (
