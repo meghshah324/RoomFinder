@@ -13,7 +13,6 @@ const ChatbotUI = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [conversationId, setConversationId] = useState("");
-  const messagesEndRef = useRef(null); // ✅ ADDED
 
   const generateRoomID = (buyerId, sellerId, listingId) => {
     const sortedIds = [buyerId, sellerId].sort().join("_");
