@@ -52,20 +52,3 @@ httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-// httpServer
-//   .listen(5000, () => {
-//     console.log(`Server running on port ${3000}`);
-//   })
-//   .on("error", (err) => {
-//     console.error("Failed to start server:", err.message);
-//   });
-
-// app.use((err,req,res,next) => {
-//    const statusCode = err.statusCode || 500;
-//    const messsage = err.message || 'Internal Server Error';
-//    return res.status(statusCode).json({
-//      success : false,
-//      statusCode,
-//      messsage
-//    });
-// });
