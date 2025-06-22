@@ -7,19 +7,17 @@ export default function Header() {
   const { isLoggedIn } = useAuthContext();
 
   return (
-    <header className="sticky top-0 z-50 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
+    <header className="sticky top-0 z-50 bg-white shadow-sm">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-between py-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="text-2xl font-bold">
-              <span className="text-gray-800">Room</span>
-              <span className="text-green-600">Wise</span>
-            </h1>
+          <Link to="/" className="text-2xl font-bold text-gray-800">
+            <span>Room</span>
+            <span className="text-green-600">Wise</span>
           </Link>
 
           {/* Navigation Links */}
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-3 sm:mt-0">
             <Link
               to="/rooms"
               className="px-4 py-2 text-sm font-medium rounded-full border border-yellow-200 hover:bg-yellow-50 hover:border-yellow-300 transition-colors"
@@ -34,7 +32,6 @@ export default function Header() {
               Add Listing
             </Link>
 
-            {/* Conditional rendering based on auth */}
             {isLoggedIn ? (
               <ProfileMenu />
             ) : (

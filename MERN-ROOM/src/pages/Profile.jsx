@@ -51,7 +51,7 @@ function Profile() {
   };
 
   return (
-    <div className="bg-white min-h-screen flex flex-col items-center p-6">
+    <div className="bg-white min-h-screen flex flex-col items-center px-4 py-6 sm:px-6 md:px-10">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
         <h1 className="text-2xl font-bold text-blue text-center">
           Add Your Room Details
@@ -61,7 +61,8 @@ function Profile() {
         </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <div className="space-y-6 p-4">
               <label className="block text-gray-700 font-medium">
                 Enter Rent*
@@ -164,7 +165,7 @@ function Profile() {
 
           <div>
             <h2 className="text-xl font-bold text-gray-600">Amenities</h2>
-            <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
               {amenities.map(({ name, icon, label }, index) => (
                 <div
                   key={name}

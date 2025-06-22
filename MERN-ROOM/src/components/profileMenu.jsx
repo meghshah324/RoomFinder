@@ -53,8 +53,6 @@ function ProfileMenu() {
   const menuItems = [
     { label: "My Profile", icon: <User size={16} />, path: "/profile" },
     { label: "My Listings", icon: <HomeIcon size={16} />, path: "/my-listings" },
-    { label: "Inbox", icon: <Inbox size={16} />, path: "/chat" },
-    { label: "Help", icon: <HelpCircle size={16} />, path: "/help" },
   ];
 
   return (

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "../components/Alert";
-import { set } from "mongoose";
 
 export default function SignUp() {
   const { refreshUser, handleLogin, handleLogout } = useAuthContext();
@@ -107,92 +106,80 @@ export default function SignUp() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Username field */}
-          <div className="flex items-center">
-            <label className="block text-gray-700 font-medium w-1/3">
-              Your Name*
-            </label>
-            <input
-              type="text"
-              id="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Please enter your name"
-              className="border border-gray-300 rounded-lg p-3 w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          {/* Email field */}
-          <div className="flex items-center">
-            <label className="block text-gray-700 font-medium w-1/3">
-              Your Email*
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Please enter your Email"
-              className="border border-gray-300 rounded-lg p-3 w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          {/* Password field */}
-          <div className="flex items-center">
-            <label className="block text-gray-700 font-medium w-1/3">
-              Your Password*
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Please enter your Password"
-              className="border border-gray-300 rounded-lg p-3 w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+          {[
+            {
+              id: "username",
+              label: "Your Name*",
+              type: "text",
+              placeholder: "Please enter your name",
+            },
+            {
+              id: "email",
+              label: "Your Email*",
+              type: "email",
+              placeholder: "Please enter your email",
+            },
+            {
+              id: "password",
+              label: "Your Password*",
+              type: "password",
+              placeholder: "Please enter your password",
+            },
+          ].map((field) => (
+            <div
+              key={field.id}
+              className="flex flex-col sm:flex-row items-start sm:items-center"
+            >
+              <label
+                htmlFor={field.id}
+                className="block text-gray-700 font-medium mb-2 sm:mb-0 sm:w-1/3"
+              >
+                {field.label}
+              </label>
+              <input
+                type={field.type}
+                id={field.id}
+                value={formData[field.id]}
+                onChange={handleChange}
+                placeholder={field.placeholder}
+                className="border border-gray-300 rounded-lg p-3 w-full sm:w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+          ))}
 
           {/* Gender selection */}
-          <div className="flex items-center">
-            <label className="block text-gray-700 font-medium w-1/3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center">
+            <label className="block text-gray-700 font-medium mb-2 sm:mb-0 sm:w-1/3">
               Your Gender*
             </label>
-            <div className="flex space-x-4 w-2/3">
-              <button
-                type="button"
-                onClick={() => handleGenderSelect("Male")}
-                className={`py-2 px-4 rounded-lg border border-gray-300 w-1/2 ${
-                  formData.gender === "Male"
-                    ? "bg-green-500 text-white"
-                    : "bg-white text-gray-700"
-                }`}
-              >
-                Male
-              </button>
-              <button
-                type="button"
-                onClick={() => handleGenderSelect("Female")}
-                className={`py-2 px-4 rounded-lg border border-gray-300 w-1/2 ${
-                  formData.gender === "Female"
-                    ? "bg-green-500 text-white"
-                    : "bg-white text-gray-700"
-                }`}
-              >
-                Female
-              </button>
+            <div className="flex space-x-4 w-full sm:w-2/3">
+              {["Male", "Female"].map((gender) => (
+                <button
+                  type="button"
+                  key={gender}
+                  onClick={() => handleGenderSelect(gender)}
+                  className={`py-2 px-4 rounded-lg border border-gray-300 w-1/2 ${
+                    formData.gender === gender
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-gray-700"
+                  }`}
+                >
+                  {gender}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* City selection */}
-          <div className="flex items-center">
-            <label className="block text-gray-700 font-medium w-1/3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center">
+            <label className="block text-gray-700 font-medium mb-2 sm:mb-0 sm:w-1/3">
               Please select the city*
             </label>
             <select
               id="city"
               value={formData.city}
               onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="border border-gray-300 rounded-lg p-3 w-full sm:w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               <option value="">Select City</option>
               <option value="Delhi">Delhi</option>
@@ -207,12 +194,11 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="w-2/3 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-75"
+              className="w-full sm:w-2/3 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-75"
             >
               {loading ? "Loading..." : "Register"}
             </button>
-
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500 mt-2">{error}</p>}
           </div>
         </form>
 

@@ -52,7 +52,7 @@ function LifestyleForm() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+       <div className="bg-gray-100 min-h-screen flex flex-col items-center p-6">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl">
         <h1 className="text-xl font-bold text-gray-800 text-center">
           Lifestyle Preferences
@@ -144,7 +144,7 @@ function LifestyleForm() {
           </select>
 
           <div className="flex justify-between mt-4">
-            <Link to="/form/profile">
+            <Link to="/form/address">
               <button
                 type="button"
                 className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"

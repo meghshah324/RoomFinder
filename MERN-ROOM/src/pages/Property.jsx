@@ -55,17 +55,23 @@ function Property() {
 
   return (
     <>
-      <div className="w-auto flex flex-col lg:flex-row gap-6 p-4 lg:p-8 bg-gray-50 min-h-screen">
+      <div className="w-full flex flex-col lg:flex-row gap-4 md:gap-6 p-4 md:p-6 lg:p-8 bg-gray-50 min-h-screen">
+        {/* Left sidebar - Profile Card */}
         <div className="w-full lg:w-1/5">
-          <div className="sticky top-4 rounded-2xl p-4 ">
+          <div className="sticky top-4 rounded-xl lg:rounded-2xl bg-white shadow-sm p-4">
             <ProfileCard roomIdDetails={roomIdDetails} />
           </div>
         </div>
-        <div className="flex-1 space-y-4 max-w-screen-lg w-full mx-auto">
-          <div className="rounded-2xl shadow-md bg-white p-4">
+
+        {/* Main content */}
+        <div className="flex-1 space-y-4 md:space-y-6 w-full max-w-screen-lg mx-auto">
+          {/* Image gallery section */}
+          <div className="rounded-xl lg:rounded-2xl shadow-sm bg-white p-3 md:p-4">
             <ImageScroller images={images} />
           </div>
-          <div className="rounded-2xl shadow-md bg-white p-4 space-y-4">
+
+          {/* Property details sections */}
+          <div className="rounded-xl lg:rounded-2xl shadow-sm bg-white p-4 md:p-6 space-y-4 md:space-y-6">
             <Location location={room.address} />
             <BasicInfo info={basicInfo} />
             <Amenities amenities={amenities} />

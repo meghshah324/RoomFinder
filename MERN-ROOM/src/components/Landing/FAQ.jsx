@@ -31,11 +31,13 @@ const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+    <section id="faq" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
             Find answers to common questions about using RoomFinder.
           </p>
         </div>
@@ -45,11 +47,11 @@ const FAQ = () => {
             <div key={index} className="border-b border-gray-200">
               <button
                 onClick={() => toggleItem(index)}
-                className="w-full flex justify-between items-center text-left font-medium py-4 hover:text-green-600 focus:outline-none"
+                className="w-full flex justify-between items-center text-left font-medium py-3 sm:py-4 hover:text-green-600 focus:outline-none"
               >
-                <span>{item.question}</span>
+                <span className="text-sm sm:text-base md:text-lg pr-2">{item.question}</span>
                 <svg
-                  className={`w-5 h-5 transform transition-transform duration-300 ${
+                  className={`w-4 h-4 sm:w-5 sm:h-5 transform transition-transform duration-300 ${
                     activeIndex === index ? 'rotate-180 text-green-600' : 'text-gray-400'
                   }`}
                   fill="none"
@@ -61,19 +63,21 @@ const FAQ = () => {
                 </svg>
               </button>
               {activeIndex === index && (
-                <div className="text-gray-600 pb-4">{item.answer}</div>
+                <div className="text-gray-600 text-xs sm:text-sm md:text-base pb-3 sm:pb-4">
+                  {item.answer}
+                </div>
               )}
             </div>
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">
+        <div className="text-center mt-8 sm:mt-12">
+          <p className="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">
             Still have questions?
           </p>
           <a
             href="#"
-            className="text-green-600 font-semibold hover:underline"
+            className="text-green-600 text-sm sm:text-base font-semibold hover:underline"
           >
             Contact our support team
           </a>
