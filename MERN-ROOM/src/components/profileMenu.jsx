@@ -68,7 +68,7 @@ function ProfileMenu() {
         >
           <img
             alt="Profile"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1480&q=80"
+            src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png"
             className="inline-block h-10 w-10 cursor-pointer rounded-full object-cover object-center ring-2 ring-white hover:ring-green-400 transition-all duration-200"
           />
         </button>
