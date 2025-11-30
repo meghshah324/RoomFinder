@@ -13,7 +13,6 @@ export default function SignUp() {
     email: "",
     password: "",
     gender: "",
-    city: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -47,7 +46,6 @@ export default function SignUp() {
       });
 
       const data = await result.json();
-      console.log("Response Data:", data);
 
       if (data.success == false) {
         setLoading(false);
@@ -65,7 +63,6 @@ export default function SignUp() {
         gender: "",
         city: "",
       });
-      console.log(formData);
       setError(null);
       setLoading(false);
       setAlert({
@@ -169,26 +166,7 @@ export default function SignUp() {
               ))}
             </div>
           </div>
-
-          {/* City selection */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center">
-            <label className="block text-gray-700 font-medium mb-2 sm:mb-0 sm:w-1/3">
-              Please select the city*
-            </label>
-            <select
-              id="city"
-              value={formData.city}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 w-full sm:w-2/3 focus:outline-none focus:ring-2 focus:ring-green-500"
-            >
-              <option value="">Select City</option>
-              <option value="Delhi">Delhi</option>
-              <option value="Mumbai">Mumbai</option>
-              <option value="Bangalore">Bangalore</option>
-              <option value="Hyderabad">Hyderabad</option>
-            </select>
-          </div>
-
+          
           {/* Submit button */}
           <div className="text-center pt-6">
             <button

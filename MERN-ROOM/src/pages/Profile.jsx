@@ -33,7 +33,6 @@ function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Selected options:", selected);
   };
 
   const handleChange = (e) => {
@@ -61,8 +60,7 @@ function Profile() {
         </h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-6 p-4">
               <label className="block text-gray-700 font-medium">
                 Enter Rent*
@@ -85,10 +83,11 @@ function Profile() {
                     key={index}
                     type="button"
                     className={`px-4 py-2 border font-medium rounded-lg 
-                                 ${formData.genderLookingFor === gender
-                        ? "bg-green-500 text-white"
-                        : "text-gray-700 hover:bg-gray-100"
-                      }`}
+                                 ${
+                                   formData.genderLookingFor === gender
+                                     ? "bg-green-500 text-white"
+                                     : "text-gray-700 hover:bg-gray-100"
+                                 }`}
                     onClick={() => {
                       setFormData((prev) => ({
                         ...prev,
@@ -114,9 +113,10 @@ function Profile() {
                       type="button"
                       name={buildingType}
                       className={`px-4 py-2 border font-medium rounded-lg 
-                        ${selected === index
-                          ? "bg-green-500 text-white"
-                          : "text-gray-700 hover:bg-gray-100"
+                        ${
+                          selected === index
+                            ? "bg-green-500 text-white"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                       onClick={() => {
                         setSelected(index);
@@ -136,14 +136,16 @@ function Profile() {
                 <label className="font-medium text-gray-700">Furnished*</label>
                 <div className="flex gap-2 mt-2">
                   {furnishedOpt.map((roomType, index) => (
+                    console.log(index),
                     <button
                       key={index}
                       type="button"
                       name={roomType}
                       className={`px-4 py-2 border font-medium rounded-lg 
-                        ${selectedFurnished === index
-                          ? "bg-green-500 text-white"
-                          : "text-gray-700 hover:bg-gray-100"
+                        ${
+                          selectedFurnished === index
+                            ? "bg-green-500 text-white"
+                            : "text-gray-700 hover:bg-gray-100"
                         }`}
                       onClick={() => {
                         setSelectedFurnished(index);
@@ -160,8 +162,6 @@ function Profile() {
               </div>
             </div>
           </div>
-
-
 
           <div>
             <h2 className="text-xl font-bold text-gray-600">Amenities</h2>
@@ -182,10 +182,11 @@ function Profile() {
                     }));
                   }}
                   className={`flex justify-center items-center border p-2 rounded-lg cursor-pointer gap-4 
-      ${selectAmenities.includes(index)
-                      ? "bg-green-500 text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                    }`}
+      ${
+        selectAmenities.includes(index)
+          ? "bg-green-500 text-white"
+          : "text-gray-700 hover:bg-gray-100"
+      }`}
                 >
                   <div>{icon}</div>
                   <label className="font-medium text-gray-700">{label}</label>

@@ -41,14 +41,13 @@ const EditProfile = () => {
   const [notification, setNotification] = useState({
     show: false,
     message: "",
-    type: "success" // success or error
+    type: "success" 
   });
   
   const [activeTab, setActiveTab] = useState("profile");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("User Data:", user);
     try {
       const res = await fetch(`http://localhost:3000/api/auth/edit-profile/${userId}`, {
         method: "POST",
@@ -145,7 +144,6 @@ const EditProfile = () => {
   
 
   const handleDeleteAccount = async () => {
-    // Create a modal confirmation
     const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
     
     if (confirmDelete) {
@@ -173,7 +171,6 @@ const EditProfile = () => {
     }
   };
   
-  // Toggle function for password visibility
   const togglePasswordVisibility = (field) => {
     setShowPassword(prev => ({
       ...prev,

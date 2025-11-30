@@ -11,7 +11,6 @@ export const getMessagesByConversation = async (req, res) => {
  
       const decryptedMessage = decryptMessage(message.message);
       message.message = decryptedMessage;
-      console.log("Decrypted message:", decryptedMessage);
     })
 
     res.json(messages);
@@ -25,8 +24,7 @@ export const createMessage = async (req, res) => {
     const { senderId, message} = req.body;
     const { conversationId } = req.params;
 
-    const encryptedMessage =encryptMessage(message);
-
+    const encryptedMessage = encryptMessage(message);
 
     const newMessage = new Message({
       conversationId,

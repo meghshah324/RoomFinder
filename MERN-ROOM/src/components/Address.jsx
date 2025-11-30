@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useFormContext } from '../context/FormContext.jsx';
+import { useNavigate } from "react-router-dom";
+import { useFormContext } from "../context/FormContext.jsx";
 
 const AddressForm = () => {
   const { formData, setFormData } = useFormContext();
   const navigate = useNavigate();
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({
-    ...prev,
-    address: {
-      ...prev.address,
-      [name]: value,
-    },
-  }));
-};
-
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      address: {
+        ...prev.address,
+        [name]: value,
+      },
+    }));
+  };
 
   const handlePrevious = () => {
-    navigate('/form/profile'); 
+    navigate("/form/profile");
   };
 
   const handleNext = () => {
-    navigate('/form/profile2');
+    navigate("/form/profile2");
   };
 
   return (
     <div className="w-[90%] md:w-[60%] lg:w-[50%] mx-auto bg-white p-8 rounded-2xl space-y-8 m-10 ">
-      <h2 className="text-3xl font-bold text-gray-700 text-center">Enter Room Address</h2>
+      <h2 className="text-3xl font-bold text-gray-700 text-center">
+        Enter Room Address
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <input

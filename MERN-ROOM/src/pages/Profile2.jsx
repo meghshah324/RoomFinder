@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext.jsx";
 
@@ -52,7 +51,7 @@ function LifestyleForm() {
   };
 
   return (
-       <div className="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center p-6">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl">
         <h1 className="text-xl font-bold text-gray-800 text-center">
           Lifestyle Preferences

@@ -67,14 +67,14 @@ export const getConversationsByProperty = async (req, res) => {
   }
 };
 
-export const getConversationById = async (req, res) => {
-  try {
-    const convo = await Conversation.findById(req.params.conversationId)
-      .populate('buyerId', 'name email')
-      .populate('sellerId', 'name email')
-      .populate('propertyId');
-    res.json(convo);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+// export const getConversationById = async (req, res) => {
+//   try {
+//     const convo = await Conversation.findById(req.params.conversationId)
+//       .populate('buyerId', 'name email')
+//       .populate('sellerId', 'name email')
+//       .populate('propertyId');
+//     res.json(convo);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };

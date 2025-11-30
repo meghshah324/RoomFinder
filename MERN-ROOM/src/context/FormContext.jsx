@@ -26,7 +26,6 @@ export const FromProvide = ({ children }) => {
             amenities : [
             ]
       });
-      console.log(formData);
       return (
             <FormContext.Provider value={{ formData, setFormData }} >
                   {children}

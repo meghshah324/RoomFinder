@@ -19,6 +19,9 @@ import MultiImageUploader from "./pages/ImageUpload.jsx";
 import AddressForm from "./components/Address.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
+
+
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -61,14 +64,14 @@ export default function App() {
             }
           />
 
-          <Route
+          {/* <Route
             path="/chat/:conversationId"
             element={
               <ProtectedRoute>
                 <ChatbotUI />
               </ProtectedRoute>
             }
-          />
+          /> */}
 
           <Route
             path="/messages/:conversationId"

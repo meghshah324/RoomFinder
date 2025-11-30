@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import LifeStyle from "../components/Property/lifeStyle.jsx";
 import Amenities from "../components/Property/amenities.jsx";
 import BasicInfo from "../components/Property/basicInfo.jsx";

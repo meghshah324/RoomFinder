@@ -7,6 +7,7 @@ import messageRoutes from "./routes/message.routes.js";
 import conversationRoutes from "./routes/conversation.routes.js";
 import cors from "cors";
 import { Server as SocketIOServer } from "socket.io";
+import compression from "compression";
 import http from "http";
 import handleSocketConnection  from "./controllers/socket.controller.js";
 import connectMongo from "./config/mongo.config.js";
@@ -17,6 +18,7 @@ connectMongo();
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
+app.use(compression());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

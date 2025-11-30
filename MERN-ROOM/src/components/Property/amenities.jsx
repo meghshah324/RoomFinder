@@ -10,7 +10,6 @@ export default function Amenities({ amenities }) {
         { key: "tv", icon: <Tv className="w-6 h-6" />, label: "TV" },
         { key: "fridge", icon: <Refrigerator className="w-6 h-6" />, label: "Fridge" },
     ];
-
     return (
         <div className="p-5 w-auto bg-gray-100 rounded-lg shadow-sm mx-6 mb-6">
             <h3 className="text-2xl font-semibold text-gray-800 mb-6">Amenities</h3>

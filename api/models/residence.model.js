@@ -21,10 +21,12 @@ const residenceSchema = new mongoose.Schema({
       url: String,
     },
   ],
-  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", index: true },
   amenities: { type: mongoose.Schema.Types.ObjectId, ref: "Amenity" },
   lifestyle: { type: mongoose.Schema.Types.ObjectId, ref: "LifeStyle" },
 });
+
+residenceSchema.index({ "address.city": 1, genderLookingFor: 1, rent: 1 });
 
 const Residence = mongoose.model("Residence", residenceSchema);
 

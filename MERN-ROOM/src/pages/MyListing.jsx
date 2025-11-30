@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Home,
-  Edit,
   Trash2,
   IndianRupee,
   MapPinned,

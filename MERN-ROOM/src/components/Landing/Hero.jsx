@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import roommateHero from "../../assets/roommate-hero.jpg";
+
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -47,7 +49,6 @@ const Hero = () => {
             </h1>
             <p
               className="mt-6 text-lg md:text-xl text-gray-700 max-w-lg leading-relaxed animate-on-scroll opacity-0 transition-all duration-700 delay-300 transform translate-y-8"
-              style={{ animationDelay: "0.3s" }}
             >
               Connect with compatible roommates and discover ideal living spaces
               that match your lifestyle and budget.
@@ -103,7 +104,7 @@ const Hero = () => {
             <div className="relative w-full max-w-lg">
               <div className="absolute -top-4 -left-4 w-full h-full bg-green-600 rounded-xl transform transition-all duration-700 animate-pulse"></div>
               <img
-                src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHJvb21tYXRlc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+                src={roommateHero}
                 alt="Happy roommates in their shared apartment"
                 className="relative z-10 rounded-xl shadow-xl object-cover w-full aspect-video transform transition-all duration-500 hover:scale-105"
               />

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import ProfileMenu from "./profileMenu";
 import { useAuthContext } from "../context/AuthContext";
@@ -10,7 +9,6 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between py-4">
-          {/* Logo */}
           <Link to="/" className="text-2xl font-bold text-gray-800">
             <span>Room</span>
             <span className="text-green-600">Wise</span>

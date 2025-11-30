@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, HomeIcon, Inbox, HelpCircle, LogOut } from "lucide-react";
+import { User, HomeIcon, LogOut } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "./Alert.jsx";
 
@@ -34,7 +34,7 @@ function ProfileMenu() {
       setAlert({
         type: "error",
         message: "Logout failed. Please try again.",
-        autoClose: 5000,
+        autoClose: 3000,
       });
     }
   };
@@ -52,13 +52,16 @@ function ProfileMenu() {
 
   const menuItems = [
     { label: "My Profile", icon: <User size={16} />, path: "/profile" },
-    { label: "My Listings", icon: <HomeIcon size={16} />, path: "/my-listings" },
+    {
+      label: "My Listings",
+      icon: <HomeIcon size={16} />,
+      path: "/my-listings",
+    },
   ];
 
   return (
     <>
       <div className="relative inline-block" ref={menuRef}>
-        {/* Profile button and dropdown menu */}
         <button
           aria-label="Open profile menu"
           aria-expanded={isOpen}

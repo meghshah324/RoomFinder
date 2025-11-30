@@ -7,13 +7,12 @@ const MessagesListPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [property, setProperty] = useState(null);
+  // const [property, setProperty] = useState(null);
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
     const fetchConversations = async () => {
       setLoading(true);
-      console.log("Fetching conversations for roomId:", roomId);
 
       try {
         const response = await fetch(
@@ -33,7 +32,6 @@ const MessagesListPage = () => {
         setConversations(conversationsResponse);
       } catch (err) {
         setError("Failed to load conversations. Please try again.");
-        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -68,7 +66,6 @@ const MessagesListPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      {/* Header */}
       <div className="mb-6">
         <button
           onClick={() => navigate("/my-listings")}
@@ -106,9 +103,6 @@ const MessagesListPage = () => {
                       <h3 className="font-medium text-gray-800">
                         {conversation.buyerName}
                       </h3>
-                      {/* <p className="text-sm text-gray-500">
-                        Last message: {new Date(conversation.lastMessageTime).toLocaleString()}
-                      </p> */}
                     </div>
                   </div>
                   <button

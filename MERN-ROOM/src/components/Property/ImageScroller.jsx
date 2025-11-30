@@ -1,10 +1,6 @@
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import img1 from "../../assets/img1.jpeg";
-import img2 from "../../assets/img2.jpeg";
-import img3 from "../../assets/img3.jpeg";
-import img4 from "../../assets/img4.jpeg";
-import img5 from "../../assets/img5.jpeg";
+
 
 export default function ImageScroller({ images = [] }) {
   const scrollRef = useRef(null);
@@ -59,6 +55,7 @@ export default function ImageScroller({ images = [] }) {
                 )}
                 <img
                   src={src.url}
+                  loading="lazy"
                   alt={`Image ${index + 1}`}
                   className={`w-72 h-48 object-cover transition-opacity duration-300 ${
                     loadedImages[index] ? "opacity-100" : "opacity-0"

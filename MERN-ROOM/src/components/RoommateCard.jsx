@@ -26,51 +26,32 @@ const RoomFinder = () => {
         setFilteredRooms(data || []);
       } catch (error) {
         setError(error.message);
-        console.error("Error fetching rooms:", error);
+        
       }
     };
     fetchRooms();
   }, []);
 
-  const applyFilters = () => {
-    const filtered = rooms.filter((room) => {
-      const rentValue = parseInt(room.rent.replace(/,/g, ""));
+    const applyFilters = async () => {
+    try {
+      const res = await fetch("/api/listing/rooms/filter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          location,
+          minRent: 0,
+          maxRent: priceRange,
+          genderPreference,
+          occupation,
+        }),
+      });
 
-      const matchesGender =
-        genderPreference === "any" ||
-        room.genderLookingFor?.toLowerCase() === genderPreference;
-
-      const matchesRent = rentValue <= priceRange;
-
-
-      const fullAddress = [
-        room.address?.street,
-        room.address?.landmark,
-        room.address?.city,
-        room.address?.state,
-        room.address?.zipCode,
-        room.address?.country,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      const matchesLocation =
-        location === "" || fullAddress.includes(location.toLowerCase());
-
-      const occupationValue =
-        room.occupation || room.lifestyle?.occupation || "";
-
-      const matchesOccupation =
-        occupation === "" ||
-        occupationValue.toLowerCase().includes(occupation.toLowerCase());
-
-      return (
-        matchesGender && matchesRent && matchesLocation && matchesOccupation
-      );
-    });
-
-    setFilteredRooms(filtered);
+      if (!res.ok) throw new Error("Failed to fetch rooms");
+      const data = await res.json();
+      setFilteredRooms(data || []);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleReset = () => {
@@ -198,14 +179,11 @@ const RoomFinder = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {error && (
-          <div className="col-span-full text-red-600 text-center">{error}</div>
-        )}
         {filteredRooms.map((room) => (
           <div
             key={room._id}
             onClick={() => navigate(`/property/${room._id}`)}
-            className="cursor-pointer bg-gray-50 shadow rounded-xl p-4 hover:shadow-md transition-transform duration-400 hover:scale-105 hover:shadow-xl"
+            className="cursor-pointer bg-gray-50 shadow rounded-xl p-4 transition-transform duration-400 hover:scale-105 hover:shadow-xl"
           >
             <div className="flex flex-col sm:flex-row items-center">
               <div className="w-24 h-24 overflow-hidden rounded-lg mb-4 sm:mb-0">
@@ -216,6 +194,7 @@ const RoomFinder = () => {
                   <img
                     src={room?.photos?.[0]?.url || img1}
                     alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
+                    loading="lazy" // adds lazy loading
                     className={`w-full h-full object-cover transition-opacity duration-300 ${
                       isImageLoaded ? "opacity-100" : "opacity-0"
                     }`}

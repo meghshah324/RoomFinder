@@ -17,7 +17,7 @@ const PremiumMultiImageUploader = (req, res) => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  console.log(req.params);
+  
   const { residenceId } = useParams();
 
   const MAX_IMAGES = 5;
@@ -140,7 +140,6 @@ const PremiumMultiImageUploader = (req, res) => {
         method: "POST",
         body: formData,
       });
-      // First check if the response is JSON
 
       const contentType = res.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {

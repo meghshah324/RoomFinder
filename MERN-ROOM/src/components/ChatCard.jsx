@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext.jsx";

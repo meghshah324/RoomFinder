@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "../components/Alert.jsx";
@@ -48,7 +48,7 @@ const Login = () => {
       setAlert({
         type: "error",
         message: "Something went wrong. Please try again.",
-        autoClose: 5000,
+        autoClose: 3000,
       });
     }
   };
@@ -62,10 +62,6 @@ const Login = () => {
     <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
       Login
     </h2>
-
-    {errorMsg && (
-      <p className="text-red-500 text-center mb-4">{errorMsg}</p>
-    )}
 
     {/* Email Field */}
     <div className="mb-4">

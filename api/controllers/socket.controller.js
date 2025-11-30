@@ -9,7 +9,6 @@ const handleSocketConnection = (io) => {
       io.to(roomId).emit("receiveMessage", message);
     });
     socket.on("disconnect", async () => {
-      console.log(`User disconnected: ${socket.id}`);
     });
   });
 };
