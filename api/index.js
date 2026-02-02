@@ -28,7 +28,7 @@ app.use(cookieParser());
 /* ---------------- CORS ---------------- */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://megh-roomwise.netlify.app/"
+  "https://megh-roomwise.netlify.app"
 ];
 
 app.use(
