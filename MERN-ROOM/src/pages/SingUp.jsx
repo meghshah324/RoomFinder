@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "../components/Alert";
+import { apiFetch } from "../services/api.js";
 
 export default function SignUp() {
   const { refreshUser, handleLogin, handleLogout } = useAuthContext();
@@ -37,7 +38,7 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      const result = await fetch("/api/auth/signup", {
+      const result = await apiFetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

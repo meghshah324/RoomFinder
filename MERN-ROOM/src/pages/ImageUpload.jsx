@@ -4,6 +4,7 @@ import { useFormContext } from "../context/FormContext";
 import { useParams } from "react-router-dom";
 import AlertMessage from "../components/Alert.jsx";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/api.js";
 
 const PremiumMultiImageUploader = (req, res) => {
   const { formData, setFormData } = useFormContext();
@@ -136,7 +137,7 @@ const PremiumMultiImageUploader = (req, res) => {
         formData.append("images", image.file);
       });
 
-      const res = await fetch(`/api/listing/upload/image/${residenceId}`, {
+      const res = await apiFetch(`/api/listing/upload/image/${residenceId}`, {
         method: "POST",
         body: formData,
       });

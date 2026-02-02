@@ -15,6 +15,7 @@ import {
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import img1 from "../assets/img1.jpeg";
+import { apiFetch } from "../services/api.js";
 
 const MyListings = () => {
   const { userId } = useAuthContext();
@@ -28,8 +29,8 @@ const MyListings = () => {
   useEffect(() => {
     const findRooms = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:3000/api/listing/userroom/${userId}`,
+        const res = await apiFetch(
+          `/api/listing/userroom/${userId}`,
           {
             method: "GET",
             credentials: "include",
@@ -58,8 +59,8 @@ const MyListings = () => {
 
     setIsDeleting(true);
     try {
-      const res = await fetch(
-        `http://localhost:3000/api/listing/delete-listing/${listingToDelete._id}`,
+      const res = await apiFetch(
+        `/api/listing/delete-listing/${listingToDelete._id}`,
         {
           method: "DELETE",
           credentials: "include",

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext.jsx";
+import { apiFetch } from "../services/api.js";
 
 function LifestyleForm() {
   const { formData, setFormData } = useFormContext();
@@ -11,7 +12,7 @@ function LifestyleForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/listing/createlist", {
+      const res = await apiFetch("/api/listing/createlist", {
         method: "POST",
         credentials: "include",
         headers: {

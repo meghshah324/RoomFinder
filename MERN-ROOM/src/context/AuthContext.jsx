@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { apiFetch } from "../services/api.js";
 
 const AuthContext = createContext();
 
@@ -11,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/auth/me', {
+      const res = await apiFetch('/api/auth/me', {
         method: 'GET',
         credentials: 'include',
       });

@@ -3,8 +3,9 @@ import io from "socket.io-client";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useLocation } from "react-router-dom";
+import { apiFetch } from "../services/api.js";
 
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_API_URL);
 
 const ChatbotUI = () => {
   const location = useLocation();
@@ -32,8 +33,8 @@ const ChatbotUI = () => {
 
     const fetchMessages = async () => {
       try {
-        const conversationResponse = await fetch(
-          `http://localhost:3000/api/conversations/get-or-create`,
+        const conversationResponse = await apiFetch(
+          `/api/conversations/get-or-create`,
           {
             method: "POST",
             headers: {
@@ -53,8 +54,8 @@ const ChatbotUI = () => {
         const conversationData = await conversationResponse.json();
         setConversationId(conversationData._id);
 
-        const messagesResponse = await fetch(
-          `http://localhost:3000/api/conversations/${conversationData._id}/messages`
+        const messagesResponse = await apiFetch(
+          `/api/conversations/${conversationData._id}/messages`
         );
 
         if (!messagesResponse.ok)
@@ -104,8 +105,8 @@ const ChatbotUI = () => {
     try {
       socket.emit("sendMessage", { roomId, message });
 
-      await fetch(
-        `http://localhost:3000/api/conversations/${conversationId}/messages`,
+      await apiFetch(
+        `/api/conversations/${conversationId}/messages`,
         {
           method: "POST",
           headers: {

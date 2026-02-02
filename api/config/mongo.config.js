@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const connectMongo = async () => {
-  
+   
   if (!process.env.MONGO_URL) {
     console.error("MongoDB connection string is not defined in .env file.");
     return;
   }
+  
   try {
     mongoose
       .connect(process.env.MONGO_URL)

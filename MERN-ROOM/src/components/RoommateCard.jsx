@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IndianRupee, MapPinned, Filter, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import img1 from "../assets/img1.jpeg";
+import { apiFetch } from "../services/api";
 
 const RoomFinder = () => {
   const [rooms, setRooms] = useState([]);
@@ -19,7 +20,7 @@ const RoomFinder = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await fetch("/api/listing/rooms");
+        const res = await apiFetch("/api/listing/rooms");
         if (!res.ok) throw new Error("Failed to fetch rooms");
         const data = await res.json();
         setRooms(data || []);
@@ -34,7 +35,7 @@ const RoomFinder = () => {
 
     const applyFilters = async () => {
     try {
-      const res = await fetch("/api/listing/rooms/filter", {
+      const res = await apiFetch("/api/listing/rooms/filter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

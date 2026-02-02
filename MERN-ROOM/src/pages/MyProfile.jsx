@@ -15,6 +15,7 @@ import {
   Camera
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/api.js";
 
 const EditProfile = () => {
   const { userId, userName, email } = useAuthContext();
@@ -49,7 +50,7 @@ const EditProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/api/auth/edit-profile/${userId}`, {
+      const res = await apiFetch(`/api/auth/edit-profile/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ const EditProfile = () => {
     }
   
     try {  
-      const response = await fetch(`/api/auth/edit-password/${userId}`, {
+      const response = await apiFetch(`/api/auth/edit-password/${userId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -148,7 +149,7 @@ const EditProfile = () => {
     
     if (confirmDelete) {
       try {
-        const res = await fetch(`/api/auth/delete-account/${userId}`, {
+        const res = await apiFetch(`/api/auth/delete-account/${userId}`, {
           method: "DELETE",
           credentials: "include",
         });

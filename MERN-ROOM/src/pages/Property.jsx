@@ -7,6 +7,7 @@ import ImageScroller from "../components/Property/ImageScroller.jsx";
 import ProfileCard from "../components/ProfileCard.jsx";
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useParams } from "react-router-dom";
+import { apiFetch } from "../services/api.js";
 
 function Property() {
   const [error, setError] = useState("");
@@ -22,7 +23,7 @@ function Property() {
   useEffect(() => {
     const fetchRoom = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/listing/room/${id}`);
+        const res = await apiFetch(`/api/listing/room/${id}`);
         if (!res.ok) throw new Error("Failed to fetch room");
         const data = await res.json();
 

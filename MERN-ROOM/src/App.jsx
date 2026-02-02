@@ -64,15 +64,6 @@ export default function App() {
             }
           />
 
-          {/* <Route
-            path="/chat/:conversationId"
-            element={
-              <ProtectedRoute>
-                <ChatbotUI />
-              </ProtectedRoute>
-            }
-          /> */}
-
           <Route
             path="/messages/:conversationId"
             element={

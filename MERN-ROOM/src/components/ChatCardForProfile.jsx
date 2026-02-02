@@ -3,8 +3,9 @@ import io from "socket.io-client";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useLocation, useParams } from "react-router-dom";
+import { apiFetch } from "../services/api.js";
 
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_API_URL);
 
 const ChatBot = () => {
   const location = useLocation();
@@ -30,8 +31,8 @@ const ChatBot = () => {
     const fetchMessages = async () => {
       setLoading(true);
       try {
-        const messagesResponse = await fetch(
-          `http://localhost:3000/api/conversations/${conversationId}/messages`
+        const messagesResponse = await apiFetch(
+          `/api/conversations/${conversationId}/messages`
         );
 
         if (!messagesResponse.ok) throw new Error("Failed to fetch messages");
@@ -88,8 +89,8 @@ const ChatBot = () => {
       }
 
       // Save to DB
-      await fetch(
-        `http://localhost:3000/api/conversations/${conversationId}/messages`,
+      await apiFetch(
+        `/api/conversations/${conversationId}/messages`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

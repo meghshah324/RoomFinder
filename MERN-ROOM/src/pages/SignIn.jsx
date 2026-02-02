@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "../components/Alert.jsx";
+import { apiFetch } from "../services/api.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/auth/signin", {
+      const res = await apiFetch("/api/auth/signin", {
         method: "POST",
         credentials: "include",
         headers: {

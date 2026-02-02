@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { User, HomeIcon, LogOut } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext";
 import AlertMessage from "./Alert.jsx";
+import { apiFetch } from "../services/api.js";
 
 function ProfileMenu() {
   const { refreshUser, handleLogout } = useAuthContext();
@@ -13,7 +14,7 @@ function ProfileMenu() {
 
   const handleLogoutOpr = async () => {
     try {
-      const res = await fetch("api/auth/logout", {
+      const res = await apiFetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

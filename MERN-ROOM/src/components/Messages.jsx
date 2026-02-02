@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MessageCircle, ArrowLeft, User } from "lucide-react";
+import { apiFetch } from "../services/api.js";
 
 const MessagesListPage = () => {
   const { roomId } = useParams();
@@ -15,8 +16,8 @@ const MessagesListPage = () => {
       setLoading(true);
 
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/conversations/property/${roomId}`,
+        const response = await apiFetch(
+          `/api/conversations/property/${roomId}`,
           {
             method: "GET",
             headers: {
