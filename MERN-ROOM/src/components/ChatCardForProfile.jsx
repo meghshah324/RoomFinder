@@ -1,9 +1,10 @@
-import  { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthContext } from "../context/AuthContext.jsx";
 import { useLocation, useParams } from "react-router-dom";
 import { apiFetch } from "../services/api.js";
+import { useChatAutoScroll } from "../hooks/useChatAutoScroll.js";
 
 const socket = io(import.meta.env.VITE_API_URL);
 
@@ -15,7 +16,8 @@ const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [loading, setLoading] = useState(true);
-  const messagesEndRef = useRef(null);
+  const { containerRef, endRef, showNewMessages, scrollToBottom, forceScrollToBottom } =
+    useChatAutoScroll(messages.length, { threshold: 100 });
 
   const generateRoomID = (buyerId, sellerId, listingId) => {
     if (!buyerId || !sellerId || !listingId) return null;
@@ -39,6 +41,7 @@ const ChatBot = () => {
 
         const messagesData = await messagesResponse.json();
         setMessages(messagesData);
+        forceScrollToBottom("auto");
 
         if (roomId) {
           socket.emit("joinConversation", roomId);
@@ -81,6 +84,8 @@ const ChatBot = () => {
     };
 
     setInputMessage("");
+    setMessages((prev) => [...prev, newMessage]);
+    forceScrollToBottom("smooth");
 
     try {
       // Emit via socket
@@ -99,6 +104,15 @@ const ChatBot = () => {
       );
     } catch (error) {
       console.error("Error sending message:", error);
+      setMessages((prev) =>
+        prev.filter(
+          (message) =>
+            !(
+              message.timestamp === newMessage.timestamp &&
+              message.senderId === newMessage.senderId
+            )
+        )
+      );
     }
   };
 
@@ -153,7 +167,20 @@ const ChatBot = () => {
   </div>
 
   {/* Messages */}
-  <div className="flex-1 overflow-y-auto px-4 py-6 max-w-3xl mx-auto w-full">
+  <div className="relative flex-1 max-w-3xl mx-auto w-full">
+    {showNewMessages && (
+      <button
+        type="button"
+        onClick={() => scrollToBottom("smooth")}
+        className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-lg hover:bg-green-700"
+      >
+        New Messages
+      </button>
+    )}
+    <div
+      ref={containerRef}
+      className="h-full overflow-y-auto px-4 py-6"
+    >
     <div className="space-y-4">
       {messages.map((message) => (
         <MessageBubble
@@ -161,8 +188,9 @@ const ChatBot = () => {
           message={message}
         />
       ))}
-      <div ref={messagesEndRef} />
+      <div ref={endRef} />
     </div>
+  </div>
   </div>
 
   {/* Input */}

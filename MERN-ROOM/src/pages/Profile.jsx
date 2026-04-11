@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AirVent,
   ParkingCircle,
@@ -7,7 +7,7 @@ import {
   WashingMachine,
   Wifi,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext";
 
 function Profile() {
@@ -29,7 +29,14 @@ function Profile() {
   const [selected, setSelected] = useState(null);
   const [selectedFurnished, setSelectedFurnished] = useState(null);
   const [selectAmenities, setSelectAmenities] = useState([]);
-  const { formData, setFormData } = useFormContext();
+  const { formData, setFormData, startFlow, updateStep, cancelFlow } =
+    useFormContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    startFlow("profile");
+    updateStep("profile");
+  }, [startFlow, updateStep]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -208,16 +215,27 @@ function Profile() {
             ></textarea>
           </div>
 
-          <Link to="/form/address">
-            <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-4 gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                cancelFlow();
+                navigate("/");
+              }}
+              className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              Cancel
+            </button>
+            <div>
               <button
                 type="button"
+                onClick={() => navigate("/form/profile2")}
                 className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
               >
                 Next
               </button>
             </div>
-          </Link>
+          </div>
         </form>
       </div>
     </div>

@@ -1,54 +1,25 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext.jsx";
-import { apiFetch } from "../services/api.js";
 
 function LifestyleForm() {
-  const { formData, setFormData } = useFormContext();
+  const { formData, setFormData, updateStep, cancelFlow, startFlow } =
+    useFormContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    startFlow("profile2");
+    updateStep("profile2");
+  }, [startFlow, updateStep]);
+
   const handleChange = (e) => {
     e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await apiFetch("/api/listing/createlist", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-
-      setFormData({
-        address: {
-          street: "",
-          landmark: "",
-          city: "",
-          state: "",
-          postalCode: "",
-          country: "",
-        },
-        rent: "",
-        buildingType: "",
-        roomType: "",
-        genderLookingFor: "",
-        amenities: [],
-        description: "",
-        cleanliness: "",
-        foodPreference: "",
-        smoker: "",
-        partyHabit: "",
-        overnightGuest: "",
-        occupation: "",
-      });
-
-      navigate(`/form/profile3/${data.postId}`);
-    } catch (error) {
-      console.error("Error during form submission:", error);
-    }
+    navigate("/form/address");
   };
 
   return (
@@ -144,7 +115,7 @@ function LifestyleForm() {
           </select>
 
           <div className="flex justify-between mt-4">
-            <Link to="/form/address">
+            <Link to="/form/profile">
               <button
                 type="button"
                 className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
@@ -152,6 +123,16 @@ function LifestyleForm() {
                 Back
               </button>
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                cancelFlow();
+                navigate("/");
+              }}
+              className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              Cancel
+            </button>
             <button
               type="submit"
               className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-purple-600"

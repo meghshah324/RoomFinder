@@ -17,7 +17,8 @@ export const postList = async (req, res) => {
       occupation,
       partyHabit,
       overnightGuest,
-      amenities
+      amenities = [],
+      photos = []
     } = req.body;
 
     const amenityObject = {
@@ -55,6 +56,7 @@ export const postList = async (req, res) => {
       genderLookingFor,
       description,
       occupation,
+      photos,
       postedBy: req.user.userId,
       amenities: newAmenity._id,
       lifestyle: lifeStyle._id

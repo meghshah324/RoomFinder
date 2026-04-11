@@ -74,3 +74,37 @@ export const uploadImages = async (req, res) => {
     }
   });
 };
+
+export const uploadImagesOnly = async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res
+        .status(400)
+        .json({ message: "Error uploading images", error: err.message });
+    }
+
+    try {
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: "No images uploaded" });
+      }
+
+      const uploadPromises = req.files.map((file) => uploadToCloudinary(file));
+      const results = await Promise.all(uploadPromises);
+
+      const uploadedImages = results.map((result) => ({
+        public_id: result.public_id,
+        url: result.secure_url,
+      }));
+
+      res.json({
+        message: "Upload successful",
+        images: uploadedImages,
+      });
+    } catch (uploadError) {
+      res.status(500).json({
+        message: "Upload failed",
+        error: uploadError.message,
+      });
+    }
+  });
+};

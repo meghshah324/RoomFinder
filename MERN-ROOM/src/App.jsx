@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Profile2 from "./pages/Profile2.jsx";
@@ -18,87 +18,98 @@ import Footer from "./components/Footer.jsx";
 import MultiImageUploader from "./pages/ImageUpload.jsx";
 import AddressForm from "./components/Address.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import FlowNavigationGuard from "./components/FlowNavigationGuard.jsx";
 
+function AppLayout() {
+  const location = useLocation();
+  const isChatRoute =
+    location.pathname === "/chat" || location.pathname.startsWith("/messages/");
+  const hideFooter =
+    isChatRoute;
 
-
-
-export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Header />
+    <AuthProvider>
+      <FromProvide>
+        <FlowNavigationGuard />
+        {!isChatRoute && <Header />}
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route
-            path="/form/*"
-            element={
-              <ProtectedRoute>
-                <FromProvide>
+            <Route
+              path="/form/*"
+              element={
+                <ProtectedRoute>
                   <Routes>
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/profile2" element={<Profile2 />} />
                     <Route path="/address" element={<AddressForm />} />
-                    <Route path="/profile3/:residenceId" element={<MultiImageUploader />} />
+                    <Route path="/profile3" element={<MultiImageUploader />} />
                   </Routes>
-                </FromProvide>
-              </ProtectedRoute>
-            }
-          />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/my-listings"
-            element={
-              <ProtectedRoute>
-                <MyListings />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/my-listings"
+              element={
+                <ProtectedRoute>
+                  <MyListings />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/chat"
-            element={
-              <ProtectedRoute>
-                <ChatbotUI />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedRoute>
+                  <ChatbotUI />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/messages/:conversationId"
-            element={
-              <ProtectedRoute>
-                <ChatBot />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/messages/:conversationId"
+              element={
+                <ProtectedRoute>
+                  <ChatBot />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/chatMessages/:roomId"
-            element={
-              <ProtectedRoute>
-                <MessagesListPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/chatMessages/:roomId"
+              element={
+                <ProtectedRoute>
+                  <MessagesListPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <MyProfile />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <MyProfile />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Public Routes */}
-          <Route path="/signin" element={<Login />} />
-          <Route path="/signup" element={<SingUp />} />
-          <Route path="/rooms" element={<RoommateCard />} />
-          <Route path="/property/:id" element={<Property />} />
+            {/* Public Routes */}
+            <Route path="/signin" element={<Login />} />
+            <Route path="/signup" element={<SingUp />} />
+            <Route path="/rooms" element={<RoommateCard />} />
+            <Route path="/property/:id" element={<Property />} />
         </Routes>
-        <Footer />
-      </AuthProvider>
+        {!hideFooter && <Footer />}
+      </FromProvide>
+    </AuthProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
     </BrowserRouter>
   );
 }

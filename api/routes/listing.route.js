@@ -8,7 +8,7 @@ import { rooms } from "../controllers/rooms.controller.js";
 import { generalLimiter } from "../middleware/rateLimiter.js"
 import { getRoomById } from "../controllers/roomById.controller.js";
 import { getRoomByUserId } from "../controllers/roomByUserId.controller.js";
-import { uploadImages } from "../controllers/imageUpload.controller.js";
+import { uploadImages, uploadImagesOnly } from "../controllers/imageUpload.controller.js";
 
 
 const router = express.Router();
@@ -20,6 +20,7 @@ router.delete("/delete-listing/:id", generalLimiter, authMiddleware, deletePost)
 router.get("/userroom/:id", generalLimiter, authMiddleware, getRoomByUserId);
 router.post("/rooms/filter", generalLimiter, filterRooms);
 router.get("/rooms", generalLimiter, rooms);
+router.post("/upload/image", generalLimiter, authMiddleware, uploadImagesOnly);
 router.post("/upload/image/:id", generalLimiter, authMiddleware, uploadImages);
 
 

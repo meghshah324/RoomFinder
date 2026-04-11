@@ -40,16 +40,16 @@ const Login = () => {
       setAlert({
         type: "success",
         message: "Login successful!",
-        autoClose: 3000,
+        autoClose: 1000,
       });
-      setTimeout(() => navigate("/"), 3000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
   
       setErrorMsg("Something went wrong. Please try again.");
       setAlert({
         type: "error",
         message: "Something went wrong. Please try again.",
-        autoClose: 3000,
+        autoClose: 1000,
       });
     }
   };

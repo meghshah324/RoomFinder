@@ -5,34 +5,39 @@ if (!BASE_URL) {
 }
 
 export async function apiFetch(endpoint, options = {}) {
-  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
-  
+  const url = endpoint.startsWith("http") ? endpoint : `${BASE_URL}${endpoint}`;
+
+  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
+  const headers = {
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    ...(options.headers || {}),
+  };
+
   const response = await fetch(url, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
     credentials: "include",
   });
 
   if (!response.ok) {
-    // Improved error handling
+    const fallbackMessage = `API Error: ${response.status} ${response.statusText}`;
+    const responseText = await response.text();
+
+    if (!responseText) {
+      throw new Error(fallbackMessage);
+    }
+
     try {
-      const errorData = await response.json();
-      throw new Error(errorData.message || errorData.error || `API Error: ${response.status}`);
-    } catch (jsonError) {
-      // If response is not JSON, fall back to text
-      const errorText = await response.text();
-      throw new Error(errorText || `API Error: ${response.status} ${response.statusText}`);
+      const errorData = JSON.parse(responseText);
+      throw new Error(errorData.message || errorData.error || fallbackMessage);
+    } catch {
+      throw new Error(responseText || fallbackMessage);
     }
   }
 
-  // CHANGED: Return the raw Response object instead of parsed JSON
   return response;
 }
 
-// ADD a separate function for JSON parsing if needed
 export async function apiFetchJson(endpoint, options = {}) {
   const response = await apiFetch(endpoint, options);
   return response.json();

@@ -7,6 +7,7 @@ import { apiFetch } from "../services/api";
 const RoomFinder = () => {
   const [rooms, setRooms] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const navigate = useNavigate();
@@ -16,9 +17,12 @@ const RoomFinder = () => {
   const [location, setLocation] = useState("");
   const [occupation, setOccupation] = useState("");
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const skeletonCards = Array.from({ length: 6 });
 
   useEffect(() => {
     const fetchRooms = async () => {
+      setIsLoading(true);
+      setError("");
       try {
         const res = await apiFetch("/api/listing/rooms");
         if (!res.ok) throw new Error("Failed to fetch rooms");
@@ -27,13 +31,16 @@ const RoomFinder = () => {
         setFilteredRooms(data || []);
       } catch (error) {
         setError(error.message);
-        
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchRooms();
   }, []);
 
-    const applyFilters = async () => {
+  const applyFilters = async () => {
+    setIsLoading(true);
+    setError("");
     try {
       const res = await apiFetch("/api/listing/rooms/filter", {
         method: "POST",
@@ -52,6 +59,8 @@ const RoomFinder = () => {
       setFilteredRooms(data || []);
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -180,78 +189,98 @@ const RoomFinder = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredRooms.map((room) => (
-          <div
-            key={room._id}
-            onClick={() => navigate(`/property/${room._id}`)}
-            className="cursor-pointer bg-gray-50 shadow rounded-xl p-4 transition-transform duration-400 hover:scale-105 hover:shadow-xl"
-          >
-            <div className="flex flex-col sm:flex-row items-center">
-              <div className="w-24 h-24 overflow-hidden rounded-lg mb-4 sm:mb-0">
-                <div className="relative w-full h-full">
-                  {!isImageLoaded && (
-                    <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-                  )}
-                  <img
-                    src={room?.photos?.[0]?.url || img1}
-                    alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
-                    loading="lazy" // adds lazy loading
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${
-                      isImageLoaded ? "opacity-100" : "opacity-0"
-                    }`}
-                    onLoad={() => setIsImageLoaded(true)}
-                  />
+        {isLoading
+          ? skeletonCards.map((_, index) => (
+              <div
+                key={`room-skeleton-${index}`}
+                className="bg-gray-50 shadow rounded-xl p-4 animate-pulse"
+              >
+                <div className="flex flex-col sm:flex-row items-center">
+                  <div className="w-24 h-24 rounded-lg bg-gray-200 mb-4 sm:mb-0" />
+                  <div className="sm:ml-4 flex-1 w-full">
+                    <div className="h-5 bg-gray-200 rounded w-2/3 mb-3" />
+                    <div className="h-4 bg-gray-200 rounded w-full" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 bg-gray-50 p-3 mt-4 text-sm">
+                  <div className="h-10 bg-gray-200 rounded" />
+                  <div className="h-10 bg-gray-200 rounded" />
+                  <div className="h-10 bg-gray-200 rounded" />
                 </div>
               </div>
-              <div className="sm:ml-4 flex-1">
-                <h2 className="text-lg font-semibold">
-                  {room?.postedBy?.username || "Unknown User"}
-                </h2>
-                <div className="text-gray-600 flex items-center text-sm mt-1">
-                  <MapPinned size={14} className="mr-1" />
-                  <p>
-                    {room.address
-                      ? [
-                          room.address.street,
-                          room.address.landmark,
-                          room.address.city,
-                          room.address.state,
-                          room.address.zipCode,
-                          room.address.country,
-                        ]
-                          .filter(Boolean)
-                          .join(", ")
-                      : "No location specified"}
-                  </p>
+            ))
+          : filteredRooms.map((room) => (
+              <div
+                key={room._id}
+                onClick={() => navigate(`/property/${room._id}`)}
+                className="cursor-pointer bg-gray-50 shadow rounded-xl p-4 transition-transform duration-400 hover:scale-105 hover:shadow-xl"
+              >
+                <div className="flex flex-col sm:flex-row items-center">
+                  <div className="w-24 h-24 overflow-hidden rounded-lg mb-4 sm:mb-0">
+                    <div className="relative w-full h-full">
+                      {!isImageLoaded && (
+                        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                      )}
+                      <img
+                        src={room?.photos?.[0]?.url || img1}
+                        alt={`Room by ${room?.postedBy?.username || "Unknown"}`}
+                        loading="lazy"
+                        className={`w-full h-full object-cover transition-opacity duration-300 ${
+                          isImageLoaded ? "opacity-100" : "opacity-0"
+                        }`}
+                        onLoad={() => setIsImageLoaded(true)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:ml-4 flex-1">
+                    <h2 className="text-lg font-semibold">
+                      {room?.postedBy?.username || "Unknown User"}
+                    </h2>
+                    <div className="text-gray-600 flex items-center text-sm mt-1">
+                      <MapPinned size={14} className="mr-1" />
+                      <p>
+                        {room.address
+                          ? [
+                              room.address.street,
+                              room.address.landmark,
+                              room.address.city,
+                              room.address.state,
+                              room.address.zipCode,
+                              room.address.country,
+                            ]
+                              .filter(Boolean)
+                              .join(", ")
+                          : "No location specified"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 bg-gray-50 p-3 mt-4 text-sm ">
+                  <div className="flex flex-col items-start">
+                    <span className="text-gray-500 text-xs">Rent</span>
+                    <div className="flex items-center text-gray-800 font-semibold">
+                      <IndianRupee size={14} className="mr-1" />
+                      {room.rent?.toLocaleString() || "N/A"}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="text-gray-500 text-xs">Looking for</span>
+                    <span className="font-semibold">
+                      {room.genderLookingFor || "Not specified"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <span className="text-gray-500 text-xs">Occupation</span>
+                    <span className="font-semibold">
+                      {room.occupation || "Not specified"}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="grid grid-cols-3 gap-2 bg-gray-50 p-3 mt-4 text-sm ">
-              <div className="flex flex-col items-start">
-                <span className="text-gray-500 text-xs">Rent</span>
-                <div className="flex items-center text-gray-800 font-semibold">
-                  <IndianRupee size={14} className="mr-1" />
-                  {room.rent?.toLocaleString() || "N/A"}
-                </div>
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-gray-500 text-xs">Looking for</span>
-                <span className="font-semibold">
-                  {room.genderLookingFor || "Not specified"}
-                </span>
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="text-gray-500 text-xs">Occupation</span>
-                <span className="font-semibold">
-                  {room.occupation || "Not specified"}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
+            ))}
       </div>
 
-      {filteredRooms.length === 0 && !error && (
+      {filteredRooms.length === 0 && !isLoading && !error && (
         <div className="text-center text-gray-600 mt-8">
           No rooms found matching your filters.
         </div>

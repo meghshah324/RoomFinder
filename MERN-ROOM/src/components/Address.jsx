@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormContext } from "../context/FormContext.jsx";
 
 const AddressForm = () => {
-  const { formData, setFormData } = useFormContext();
+  const { formData, setFormData, updateStep, startFlow, cancelFlow } =
+    useFormContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    startFlow("address");
+    updateStep("address");
+  }, [startFlow, updateStep]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,11 +24,11 @@ const AddressForm = () => {
   };
 
   const handlePrevious = () => {
-    navigate("/form/profile");
+    navigate("/form/profile2");
   };
 
   const handleNext = () => {
-    navigate("/form/profile2");
+    navigate("/form/profile3");
   };
 
   return (
@@ -35,7 +42,7 @@ const AddressForm = () => {
           type="text"
           name="street"
           placeholder="Street Address"
-          value={formData.street}
+          value={formData.address.street}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -43,7 +50,7 @@ const AddressForm = () => {
           type="text"
           name="landmark"
           placeholder="Landmark (optional)"
-          value={formData.landmark}
+          value={formData.address.landmark}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -51,7 +58,7 @@ const AddressForm = () => {
           type="text"
           name="city"
           placeholder="City"
-          value={formData.city}
+          value={formData.address.city}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -59,7 +66,7 @@ const AddressForm = () => {
           type="text"
           name="state"
           placeholder="State"
-          value={formData.state}
+          value={formData.address.state}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -67,7 +74,7 @@ const AddressForm = () => {
           type="text"
           name="postalCode"
           placeholder="Postal Code"
-          value={formData.postalCode}
+          value={formData.address.postalCode}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -75,7 +82,7 @@ const AddressForm = () => {
           type="text"
           name="country"
           placeholder="Country"
-          value={formData.country}
+          value={formData.address.country}
           onChange={handleChange}
           className="w-full p-4 text-base border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
         />
@@ -87,6 +94,15 @@ const AddressForm = () => {
           className="px-6 py-3 text-white bg-gray-500 rounded-lg hover:bg-gray-600 transition"
         >
           Previous
+        </button>
+        <button
+          onClick={() => {
+            cancelFlow();
+            navigate("/");
+          }}
+          className="px-6 py-3 text-white bg-red-500 rounded-lg hover:bg-red-600 transition"
+        >
+          Cancel
         </button>
         <button
           onClick={handleNext}

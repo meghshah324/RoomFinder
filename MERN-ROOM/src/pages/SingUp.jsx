@@ -69,18 +69,18 @@ export default function SignUp() {
       setAlert({
         type: "success",
         message: "Registration successful! Redirecting to login...",
-        autoClose: 3000,
+        autoClose: 1000,
       });
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 1000);
     } catch (error) {
       console.error("Error during form submission:", error);
       setLoading(false);
       setAlert({
         type: "error",
         message: "Something went wrong. Please try again.",
-        autoClose: 5000,
+        autoClose: 1000,
       });
       setError(error.message || "A network error occurred.");
     }

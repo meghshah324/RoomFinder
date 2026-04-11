@@ -28,21 +28,33 @@ app.use(cookieParser());
 /* ---------------- CORS ---------------- */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://megh-roomwise.netlify.app"
+  "http://127.0.0.1:5173",
+  "https://megh-roomwise.netlify.app",
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
-    },
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    // Allow localhost/127.0.0.1 on any port during local development.
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error("CORS not allowed"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 /* ---------------- ROUTES ---------------- */
 app.use("/api/auth", authRouter);
@@ -60,7 +72,7 @@ const httpServer = http.createServer(app);
 
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => corsOptions.origin(origin, callback),
     credentials: true,
   },
 });

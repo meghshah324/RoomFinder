@@ -1,13 +1,20 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Upload, X, Check, AlertCircle, Loader } from "lucide-react";
 import { useFormContext } from "../context/FormContext";
-import { useParams } from "react-router-dom";
 import AlertMessage from "../components/Alert.jsx";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../services/api.js";
 
-const PremiumMultiImageUploader = (req, res) => {
-  const { formData, setFormData } = useFormContext();
+const PremiumMultiImageUploader = () => {
+  const {
+    formData,
+    isFlowLocked,
+    startFlow,
+    updateStep,
+    completeFlow,
+    cancelFlow,
+  } = useFormContext();
   const [images, setImages] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [error, setError] = useState("");
@@ -18,8 +25,15 @@ const PremiumMultiImageUploader = (req, res) => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  
-  const { residenceId } = useParams();
+  useEffect(() => {
+    if (!isFlowLocked) {
+      navigate("/form/profile", { replace: true });
+      return;
+    }
+
+    startFlow("profile3");
+    updateStep("profile3");
+  }, [isFlowLocked, navigate, startFlow, updateStep]);
 
   const MAX_IMAGES = 5;
   const MAX_SIZE_MB = 5;
@@ -132,64 +146,90 @@ const PremiumMultiImageUploader = (req, res) => {
     const stopSimulation = simulateProgress();
 
     try {
-      const formData = new FormData();
+      const uploadPayload = new FormData();
       images.forEach((image) => {
-        formData.append("images", image.file);
+        uploadPayload.append("images", image.file);
       });
 
-      const res = await apiFetch(`/api/listing/upload/image/${residenceId}`, {
+      const uploadRes = await apiFetch(`/api/listing/upload/image`, {
         method: "POST",
-        body: formData,
+        body: uploadPayload,
       });
 
-      const contentType = res.headers.get("content-type");
+      const contentType = uploadRes.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
+        const text = await uploadRes.text();
         throw new Error(text || "Server returned non-JSON response");
       }
 
-      const data = await res.json();
-      setUploadProgress(100);
-      setFormData({ postId: "" });
+      const uploadData = await uploadRes.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Upload failed");
+      if (!uploadRes.ok) {
+        throw new Error(uploadData.message || "Image upload failed");
       }
 
-      setUploadedImages((prev) => [...prev, ...data.images]);
+      const listingPayload = {
+        ...formData,
+        photos: uploadData.images || [],
+      };
+
+      await apiFetch("/api/listing/createlist", {
+        method: "POST",
+        body: JSON.stringify(listingPayload),
+      });
+
+      setUploadProgress(100);
+      setUploadedImages((prev) => [...prev, ...(uploadData.images || [])]);
       setAlert({
         type: "success",
-        message: "Images uploaded successfully",
+        message: "Listing created successfully",
         autoClose: 3000,
       });
       setImages([]);
+      navigate("/rooms");
       setTimeout(() => {
         setAlert(null);
-        navigate("/");
+        completeFlow();
       }, 3000);
 
-    } catch (error) {
-      console.error("Upload error:", error);
-      if (error.message.includes("<!DOCTYPE html>")) {
+    } catch (submitError) {
+      console.error("Listing submission error:", submitError);
+      if (submitError.message.includes("<!DOCTYPE html>")) {
         setError("Server error occurred. Please try again later.");
       } else {
-        setError(error.message || "Upload failed");
+        setError(submitError.message || "Upload failed");
       }
       setAlert({
         type: "error",
-        message: error.message || "Upload failed",
+        message:
+          submitError.message ||
+          "Image upload failed. Listing was not created.",
         autoClose: 5000,
       });
     } finally {
       setTimeout(() => setIsUploading(false), 500);
-      clearTimeout(stopSimulation);
+      stopSimulation();
     }
+  };
+
+  const handleCancel = () => {
+    cancelFlow();
+    navigate("/");
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
       <div className="flex justify-center text-green-500 font-bold text-2xl">
         Upload Property Images
+      </div>
+      <div className="flex justify-end">
+        <button
+          onClick={handleCancel}
+          type="button"
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+        >
+          Cancel Listing
+        </button>
       </div>
       <div className="border-2 border-dashed rounded-lg bg-gray-50 border-gray-300 relative">
         <input
