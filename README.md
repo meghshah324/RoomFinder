@@ -1,113 +1,132 @@
-# 🏠 ROOM-WISE – MERN Stack Room Finder Web App
+# RoomFinder (ROOM-WISE)
 
-**ROOM-WISE** is a full-stack Room Finder web application that connects room owners with potential renters. Built using the **MERN stack** (MongoDB, Express, React, Node.js) and styled with **Tailwind CSS**, the platform supports dynamic search, real-time messaging, and secure multi-image uploads.
+RoomFinder is a full-stack MERN application for discovering and posting room/roommate listings. It includes secure authentication, listing management, image upload, and real-time chat between users.
 
+## Features
 
-## 🚀 Features
+- Authentication with JWT and protected routes
+- Create, edit, and delete room listings
+- Image upload and optimization pipeline (Cloudinary + Sharp)
+- Listing search/filter workflows
+- Real-time messaging with Socket.IO
+- Responsive React UI with Tailwind CSS
 
-- 🔍 **Dynamic Search & Filter**
-  - Search rooms by **city, price, location**
-  - Instant filtering for a seamless UX
+## Tech Stack
 
-- 🏠 **Room Listings for Owners**
-  - List rooms with **title, description, price, and location**
-  - Upload up to 5 images using **Cloudinary**
+- Frontend: React, Vite, Tailwind CSS, React Router
+- Backend: Node.js, Express, Socket.IO
+- Database: MongoDB (Mongoose)
+- Auth/Security: JWT, bcrypt, cookie-based sessions, rate limiting
+- Media: Cloudinary, Multer, Sharp
 
-- 📍 **Google Maps Integration**
-  - View rooms directly on the map
-  - Auto-suggest addresses and city detection
+## Repository Structure
 
-- 🗨️ **Secure Real-Time Chat**
-  - Encrypted **Socket.IO**-based private messaging
-  - **JWT authentication** for secure user sessions
+```text
+RoomFinder/
+  api/         # Express API + Socket.IO server
+  MERN-ROOM/   # React frontend (Vite)
+```
 
-- 🧾 **User Roles & Auth**
-  - Separate flows for **buyers and sellers**
-  - **JWT-protected routes** and **role-based UI**
+## Prerequisites
 
----
+- Node.js 18+ (recommended)
+- npm 9+
+- MongoDB connection string
+- Cloudinary account credentials
+- Google Maps API key (for map-related frontend features)
 
-## 🧑‍💻 Tech Stack
+## Environment Variables
 
-| Frontend        | Backend        | Database | Auth        | Other Tools               |
-|-----------------|----------------|----------|-------------|----------------------------|
-| React.js        | Node.js        | MongoDB  | JWT         | Tailwind CSS              |
-| Google Maps API | Express.js     |          | bcrypt.js   | Cloudinary (image upload) |
-|                 | Socket.IO      |          |             | Postman (API testing)     |
+Create an `.env` file in `api/`:
 
----
+```env
+PORT=5000
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+AES_SECRET_KEY=your_aes_secret
 
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 
+NODE_ENV=development
+```
 
-## 🌐 APIs & Integration
+Create an `.env` file in `MERN-ROOM/`:
 
-- **Cloudinary API**: Upload and store room images
-- **Google Maps API**: Location autocomplete and maps
-- **Socket.IO**: Real-time chat between buyers and sellers
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key
+```
 
+## Local Setup
 
-
-
-## 🧪 Setup & Installation
-
-Follow the steps below to run the **RoomFinder** MERN stack application locally.
-
----
-
-### 1. 📦 Clone the Repository
+1. Clone the repository
 
 ```bash
 git clone https://github.com/meghshah324/RoomFinder.git
 cd RoomFinder
 ```
 
-### 2. 🛠️ Backend Setup (API)
+2. Install backend dependencies
 
 ```bash
 cd api
 npm install
 ```
 
-
-### 📄 Create a .env file in the api/ folder with the following variables:
-
-- PORT=5000
-- MONGO_URI=your_mongodb_uri
-- JWT_SECRET=your_jwt_secret
-- CLOUDINARY_CLOUD_NAME=your_cloud_name
-- CLOUDINARY_API_KEY=your_cloudinary_api_key
-- CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-- CLOUDINARY_URL=your_cloudinary_url
-- AES_SECRET_KEY=your_aes_secret_key
-
-▶️ Start the Backend Server
-```bash
-npm run dev
-```
-
-### 3. 🖥️ Frontend Setup (React)
+3. Install frontend dependencies
 
 ```bash
-cd MERN-ROOM
+cd ../MERN-ROOM
 npm install
 ```
 
-### 📄 Create a .env file in the MERN-ROOM/ folder with the following variables:
+## Run the Project
 
-- VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+Use two terminals.
 
+1. Start backend server
 
-▶️ Start the Frontend Server
 ```bash
+cd api
 npm run dev
 ```
-### 4. 🌐 Access the Application
 
-Open your browser and navigate to:
+2. Start frontend app
 
+```bash
+cd MERN-ROOM
+npm run dev
 ```
-http://localhost:5173
-```
+
+Frontend: `http://localhost:5173`  
+Backend health check: `http://localhost:5000/api/health`
+
+## Available Scripts
+
+Backend (`api/package.json`):
+
+- `npm run dev` - Start API with nodemon
+- `npm start` - Start API with node
+
+Frontend (`MERN-ROOM/package.json`):
+
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Build production bundle
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Troubleshooting
+
+- `VITE_API_URL is not defined`: add frontend `.env` and restart Vite.
+- MongoDB connection errors: verify `MONGO_URL` in `api/.env`.
+- Cloudinary upload failures: verify Cloudinary keys in `api/.env`.
+- CORS blocked requests: ensure your frontend origin is allowed in backend CORS config.
+
+## License
+
+ISC
 
 
 
