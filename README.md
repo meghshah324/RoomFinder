@@ -117,16 +117,6 @@ Frontend (`MERN-ROOM/package.json`):
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
-## Troubleshooting
-
-- `VITE_API_URL is not defined`: add frontend `.env` and restart Vite.
-- MongoDB connection errors: verify `MONGO_URL` in `api/.env`.
-- Cloudinary upload failures: verify Cloudinary keys in `api/.env`.
-- CORS blocked requests: ensure your frontend origin is allowed in backend CORS config.
-
-## License
-
-ISC
 
 
 
